@@ -1,0 +1,29 @@
+{
+    "name": "sitebill/dragon",
+    "description": "Sitebill Dragon",
+    "license": "MIT",
+    "homepage": "https://www.sitebill.ru/",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Dmitriy Kondin",
+            "email": "dkondin@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sitebill\\Dragon\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sitebill\\Dragon\\DragonServiceProvider"
+            ]
+        }
+    }
+}
