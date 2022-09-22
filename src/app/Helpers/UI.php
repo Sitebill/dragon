@@ -2,7 +2,7 @@
 namespace Sitebill\Dragon\app\Helpers;
 
 class UI {
-    private static $dist_dir = __DIR__.'/../../../dist';
+    private static $dist_dir = __DIR__.'/../../../angular/dist/dragon';
     private static $angular_dist_files;
 
     public static function load_dist_files_list() {
@@ -12,8 +12,8 @@ class UI {
                 while (($item = readdir($dh)) !== false) {
                     if (is_file(self::$dist_dir . '/' . $item) and ! preg_match('/^\./', $item)) {
                         $result['dist_files'][] = $item;
-                        list($prefix, $random, $extension) = explode('.', $item);
-                        if ( !in_array($item, array('index.php', 'install.php', '.htaccess')) ) {
+                        if ( !in_array($item, array('index.php', 'install.php', '.htaccess', 'favicon.ico', 'index.html', '3rdpartylicenses.txt')) ) {
+                            list($prefix, $random, $extension) = explode('.', $item);
                             $result['dist_files_prefixes'][$prefix] = $item;
                         }
                     }
