@@ -13,6 +13,7 @@
                 <app-root></app-root>
                 <script src="{{Sitebill\Dragon\app\Helpers\UI::get_angular_file('runtime')}}" defer></script>
                 <script src="{{Sitebill\Dragon\app\Helpers\UI::get_angular_file('polyfills')}}" defer></script>
+                <script src="{{Sitebill\Dragon\app\Helpers\UI::get_angular_file('scripts')}}" defer></script>
                 <script src="{{Sitebill\Dragon\app\Helpers\UI::get_angular_file('main')}}" defer></script>
             </div>
         </div>
