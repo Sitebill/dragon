@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GridComponent } from './grid.component';
+import {AgGridModule} from "ag-grid-angular";
+import {HttpClientModule} from "@angular/common/http";
 
 
 
@@ -12,7 +14,9 @@ import { GridComponent } from './grid.component';
         GridComponent
     ],
     imports: [
-        CommonModule
+        CommonModule,
+        HttpClientModule,
+        AgGridModule
     ]
 })
 export class GridModule { }
