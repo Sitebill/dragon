@@ -2,7 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {CellClickedEvent, ColDef, GridReadyEvent} from "ag-grid-community";
 import {Observable} from "rxjs";
 import {AgGridAngular} from "ag-grid-angular";
-import {HttpClient} from "@angular/common/http";
+import {EntityService} from "../services/entity.service";
+import {Entity} from "../models/entity.model";
 
 @Component({
     selector: 'dg-grid',
@@ -29,7 +30,9 @@ export class GridComponent implements OnInit {
     // For accessing the Grid's API
     @ViewChild(AgGridAngular) agGrid!: AgGridAngular;
 
-    constructor(private http: HttpClient) {
+    constructor(
+        private entityService: EntityService
+    ) {
     }
 
     ngOnInit(): void {
@@ -37,8 +40,10 @@ export class GridComponent implements OnInit {
 
     // Example load data from sever
     onGridReady(params: GridReadyEvent) {
-        this.rowData$ = this.http
-            .get<any[]>('https://www.ag-grid.com/example-assets/row-data.json');
+        let entity = new Entity();
+
+        // example 'https://www.ag-grid.com/example-assets/row-data.json'
+        this.rowData$ = this.entityService.fetch(entity);
     }
 
     // Example of consuming Grid Event

@@ -5,6 +5,7 @@ namespace Sitebill\Dragon;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Sitebill\Dragon\app\Middleware\Cors;
 
 class DragonServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,7 @@ class DragonServiceProvider extends ServiceProvider
 
         // setup the routes
         $this->setupRoutes($this->app->router);
+        $this->app->router->aliasMiddleware('dragon-cors', Cors::class);
     }
 
     /**
