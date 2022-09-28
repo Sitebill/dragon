@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CellClickedEvent, ColDef, GridReadyEvent} from "ag-grid-community";
-import {Observable} from "rxjs";
+import {Observable, Subject, takeUntil} from "rxjs";
 import {AgGridAngular} from "ag-grid-angular";
 import {EntityService} from "../services/entity.service";
 import {Entity} from "../models/entity.model";
+import {GridDataModel, GridResponseModel} from "../models/responses/grid-response.model";
 
 @Component({
     selector: 'dg-grid',
@@ -26,6 +27,9 @@ export class GridComponent implements OnInit {
 
     // Data that gets displayed in the grid
     public rowData$!: Observable<any[]>;
+    public gridData: GridDataModel[] = [];
+
+    protected _unsubscribeAll: Subject<any>;
 
     // For accessing the Grid's API
     @ViewChild(AgGridAngular) agGrid!: AgGridAngular;
@@ -33,6 +37,7 @@ export class GridComponent implements OnInit {
     constructor(
         private entityService: EntityService
     ) {
+        this._unsubscribeAll = new Subject();
     }
 
     ngOnInit(): void {
@@ -42,8 +47,12 @@ export class GridComponent implements OnInit {
     onGridReady(params: GridReadyEvent) {
         let entity = new Entity();
 
-        // example 'https://www.ag-grid.com/example-assets/row-data.json'
-        this.rowData$ = this.entityService.fetch(entity);
+        this.entityService.fetch(entity)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: GridResponseModel) => {
+                console.log(result.data);
+                this.gridData = result.data;
+            });
     }
 
     // Example of consuming Grid Event
@@ -56,4 +65,12 @@ export class GridComponent implements OnInit {
         this.agGrid.api.deselectAll();
     }
 
+    /**
+     * On destroy
+     */
+    ngOnDestroy(): void {
+        // Unsubscribe from all subscriptions
+        this._unsubscribeAll.next(null);
+        this._unsubscribeAll.complete();
+    }
 }

@@ -6,7 +6,8 @@ import { Injectable } from '@angular/core';
 export class EndpointService {
 
     public get ( route: string ) {
-        return 'https://dragon.sitebill.site/dragon/api/' + route;
+        return 'http://food/dragon/api/' + route;
+        //return 'https://dragon.sitebill.site/dragon/api/' + route;
     }
 
 }

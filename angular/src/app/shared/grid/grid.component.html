@@ -6,7 +6,7 @@
     class="ag-theme-alpine"
     [columnDefs]="columnDefs"
     [defaultColDef]="defaultColDef"
-    [rowData]="rowData$ | async"
+    [rowData]="gridData"
     [rowSelection]="'multiple'"
     [animateRows]="true"
     (gridReady)="onGridReady($event)"
