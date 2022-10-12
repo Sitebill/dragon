@@ -15,6 +15,9 @@ trait AnyModel
         if ( $table ) {
             if ( isset($table->columns) ) {
                 foreach ( $table->columns as $column ) {
+                    if ( $column->type == 'primary_key' ) {
+                        $this->primaryKey = $column->name;
+                    }
                     if ( isset(Dictionary::$hash[$column->type]) ) {
                         $this->setCast($column->name, Dictionary::$hash[$column->type]);
                     } else {
