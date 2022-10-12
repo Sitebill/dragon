@@ -4,7 +4,7 @@ namespace Sitebill\Dragon\Eloquent\ValueObjects;
 
 use Sitebill\Dragon\Eloquent\Column;
 
-class SelectBox extends BaseValueObject
+class PrimaryKey extends BaseValueObject
 {
     /**
      * @param  \Sitebill\Dragon\Eloquent\Model  $model
@@ -15,7 +15,7 @@ class SelectBox extends BaseValueObject
      */
     public function __construct( $model, $key, $value, $attributes, Column $column = null )
     {
-        $this->select_data = $column->select_data();
         $this->value = $value;
+        $this->type = 'primary_key';
     }
 }

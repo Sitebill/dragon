@@ -1,13 +1,11 @@
 <?php
 
 namespace Sitebill\Dragon\Eloquent\Casts;
-
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Sitebill\Dragon\Eloquent\Column;
-use Sitebill\Dragon\Eloquent\TableColumnsStorage;
-use \Sitebill\Dragon\Eloquent\ValueObjects\SelectBox as SelectBoxValueObject;
+use Sitebill\Dragon\Eloquent\ValueObjects\SelectBox as SelectBoxValueObject;
 
-class SelectBox implements CastsAttributes
+
+class SafeString implements CastsAttributes
 {
     /**
      * Cast the given value.
@@ -20,9 +18,7 @@ class SelectBox implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        $table_builder = TableColumnsStorage::get($model->getTable());
-        $table = $table_builder->first();
-        return new \Sitebill\Dragon\Eloquent\ValueObjects\SelectBox($model, $key, $value, $attributes, $table->columns()->where('name', $key)->first());
+        return new \Sitebill\Dragon\Eloquent\ValueObjects\SafeString($model, $key, $value, $attributes);
     }
 
     /**
@@ -38,4 +34,5 @@ class SelectBox implements CastsAttributes
     {
         return $value;
     }
+
 }
