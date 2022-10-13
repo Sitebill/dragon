@@ -3,26 +3,22 @@
 namespace Sitebill\Dragon\Eloquent\Traits;
 
 use Sitebill\Dragon\Eloquent\Casts\Dictionary;
-use Sitebill\Dragon\Eloquent\Table;
 use Sitebill\Dragon\Eloquent\TableColumnsStorage;
 
 trait AnyModel
 {
     public function newFromBuilder($attributes = [], $connection = null)
     {
-        $table_model = TableColumnsStorage::get($this->getTable());
-        $table = $table_model->first();
-        if ( $table ) {
-            if ( isset($table->columns) ) {
-                foreach ( $table->columns as $column ) {
-                    if ( $column->type == 'primary_key' ) {
-                        $this->primaryKey = $column->name;
-                    }
-                    if ( isset(Dictionary::$hash[$column->type]) ) {
-                        $this->setCast($column->name, Dictionary::$hash[$column->type]);
-                    } else {
-                        $this->setCast($column->name, Dictionary::$hash['safe_string']);
-                    }
+        $columns = TableColumnsStorage::getColumns($this->getTable());
+        if ( $columns ) {
+            foreach ( $columns as $column ) {
+                if ( $column->type == 'primary_key' ) {
+                    $this->primaryKey = $column->name;
+                }
+                if ( isset(Dictionary::$hash[$column->type]) ) {
+                    $this->setCast($column->name, Dictionary::$hash[$column->type]);
+                } else {
+                    $this->setCast($column->name, Dictionary::$hash['safe_string']);
                 }
             }
         } else {
