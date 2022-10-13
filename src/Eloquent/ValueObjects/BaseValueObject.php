@@ -56,7 +56,8 @@ abstract class BaseValueObject
     public function __construct( $model, $key, $value, $attributes, Column $column = null )
     {
         $this->value = $value;
-        $this->type = 'safe_string';
+        $this->title = isset($column) ? $column->title : $key;
+        $this->type = isset($column) ? $column->type : 'safe_string';
     }
 
 }

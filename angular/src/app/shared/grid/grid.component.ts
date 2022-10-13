@@ -1,10 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {CellClickedEvent, ColDef, GridReadyEvent} from "ag-grid-community";
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {CellClickedEvent, ColDef, GridReadyEvent, ValueGetterParams} from "ag-grid-community";
 import {Observable, Subject, takeUntil} from "rxjs";
 import {AgGridAngular} from "ag-grid-angular";
 import {EntityService} from "../services/entity.service";
 import {Entity} from "../models/entity.model";
-import {GridDataModel, GridResponseModel} from "../models/responses/grid-response.model";
+import {GridResponseModel, RowItem} from "../models/responses/grid-response.model";
 
 @Component({
     selector: 'dg-grid',
@@ -13,11 +13,7 @@ import {GridDataModel, GridResponseModel} from "../models/responses/grid-respons
 })
 export class GridComponent implements OnInit {
     // Each Column Definition results in one Column.
-    public columnDefs: ColDef[] = [
-        {field: 'make'},
-        {field: 'model'},
-        {field: 'price'}
-    ];
+    public columnDefs: ColDef[] = [];
 
     // DefaultColDef sets props common to all Columns
     public defaultColDef: ColDef = {
@@ -27,7 +23,11 @@ export class GridComponent implements OnInit {
 
     // Data that gets displayed in the grid
     public rowData$!: Observable<any[]>;
-    public gridData: GridDataModel[] = [];
+    public gridData: RowItem[] = [];
+
+    @Input()
+    entity!: Entity;
+
 
     protected _unsubscribeAll: Subject<any>;
 
@@ -45,14 +45,29 @@ export class GridComponent implements OnInit {
 
     // Example load data from sever
     onGridReady(params: GridReadyEvent) {
-        let entity = new Entity();
+        let entity = this.entity;
 
         this.entityService.fetch(entity)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: GridResponseModel) => {
-                console.log(result.data);
-                this.gridData = result.data;
+                this.gridData = result.rows;
+                let columns = Object.keys(this.gridData[0]);
+                this.columnDefs = this.composecolumnDefs(columns, this.gridData[0]);
             });
+    }
+
+    composecolumnDefs (columns: string[], rowItem: RowItem): Array<ColDef> {
+        const columnDefs: Array<ColDef> = [];
+        columns.forEach( column => {
+            columnDefs.push(
+                {
+                    headerName: rowItem[column] && rowItem[column].title ? rowItem[column].title : column,
+                    colId: column,
+                    valueGetter: safeStringValueGetter,
+                }
+            );
+        });
+        return columnDefs;
     }
 
     // Example of consuming Grid Event
@@ -73,4 +88,12 @@ export class GridComponent implements OnInit {
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
     }
+}
+
+function primaryKeyValueGetter(params: ValueGetterParams) {
+    return safeStringValueGetter(params);
+}
+function safeStringValueGetter(params: ValueGetterParams) {
+    const colId = params.colDef.colId ? params.colDef.colId : '';
+    return params.data && params.data[colId] ? params.data[colId]['value'] : null;
 }

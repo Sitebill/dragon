@@ -1,9 +1,9 @@
+import {EntityItem} from "../entity-item.model";
+
 export interface GridResponseModel {
     success: boolean,
-    data: GridDataModel[]
+    rows: RowItem[]
 }
-export interface GridDataModel {
-    make: string,
-    model: string,
-    price: number
+export interface RowItem {
+    [name: string]: EntityItem
 }

@@ -2,8 +2,8 @@ import {EntityItem} from "./entity-item.model";
 import {FormType} from "./api.model";
 
 export class Entity {
-    private app_name: string;
-    private table_name: string;
+    public app_name: string;
+    public table_name: string;
     primary_key: string;
     key_value: number;
     columns: string[];

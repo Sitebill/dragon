@@ -2,6 +2,7 @@
 
 namespace Sitebill\Dragon\Eloquent\Traits;
 
+use Sitebill\Dragon\Eloquent\Casts\BaseCast;
 use Sitebill\Dragon\Eloquent\Casts\Dictionary;
 use Sitebill\Dragon\Eloquent\TableColumnsStorage;
 
@@ -15,15 +16,11 @@ trait AnyModel
                 if ( $column->type == 'primary_key' ) {
                     $this->primaryKey = $column->name;
                 }
-                if ( isset(Dictionary::$hash[$column->type]) ) {
-                    $this->setCast($column->name, Dictionary::$hash[$column->type]);
-                } else {
-                    $this->setCast($column->name, Dictionary::$hash['safe_string']);
-                }
+                $this->setCast($column->name, BaseCast::class);
             }
         } else {
             foreach ($attributes as $key => $value) {
-                $this->setCast($key, Dictionary::$hash['safe_string']);
+                $this->setCast($key, BaseCast::class);
             }
         }
         return parent::newFromBuilder($attributes, $connection);

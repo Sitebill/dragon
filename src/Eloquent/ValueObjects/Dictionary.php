@@ -1,6 +1,6 @@
 <?php
 
-namespace Sitebill\Dragon\Eloquent\Casts;
+namespace Sitebill\Dragon\Eloquent\ValueObjects;
 
 class Dictionary
 {

@@ -15,7 +15,7 @@ class SelectBox extends BaseValueObject
      */
     public function __construct( $model, $key, $value, $attributes, Column $column = null )
     {
+        parent::__construct($model, $key, $value, $attributes, $column);
         $this->select_data = $column->select_data();
-        $this->value = $value;
     }
 }
