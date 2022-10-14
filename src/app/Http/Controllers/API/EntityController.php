@@ -4,12 +4,10 @@ namespace Sitebill\Dragon\app\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Sitebill\Dragon\app\Exceptions\DragonExceptions;
 use Sitebill\Dragon\app\Http\Controllers\API\Traits\Entity;
 use Sitebill\Dragon\app\Http\Controllers\API\Traits\ErrorReporting;
-use Sitebill\Dragon\app\Models\AnyModel;
-use Sitebill\Dragon\Eloquent\DynamicModel;
+use Sitebill\Dragon\Helpers\DragonHelper;
 
 class EntityController extends Controller
 {
@@ -38,7 +36,7 @@ class EntityController extends Controller
 
         $app_name = 'data';
 
-        $anyModel = App::make(DynamicModel::class, ['table_name' => $app_name]);
+        $anyModel = DragonHelper::getDynamicModel($app_name);
 
         //$model = app($app_name);
 
