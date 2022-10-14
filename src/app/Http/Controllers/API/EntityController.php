@@ -34,7 +34,7 @@ class EntityController extends Controller
         $ql_items = $this->request->get('ql_items');
         //dd(config('db'));
 
-        $app_name = 'data';
+        $app_name = $app_name!= '' ? $app_name : 'data';
 
         $anyModel = DragonHelper::getDynamicModel($app_name);
 

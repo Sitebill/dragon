@@ -64,9 +64,8 @@ class DynamicModel extends Model
         if (!Schema::hasTable($this->table)) {
             throw new Exception("The table you provided to the DynamicModel does not exists! Please create it first!");
         }
-        $connection_config = Config::get('database.connections');
         $connection = Schema::getConnection();
-        $table_name_with_prefix = $connection_config[env('DB_CONNECTION')]['prefix'].$table;
+        $table_name_with_prefix = $connection->getTablePrefix().$table;
         $table = $connection->getDoctrineSchemaManager()->listTableDetails($table_name_with_prefix);
         $primaryKeyName = $table->getPrimaryKey()->getColumns()[0];
         $primaryColumn = $connection->getDoctrineColumn($table_name_with_prefix, $primaryKeyName);
