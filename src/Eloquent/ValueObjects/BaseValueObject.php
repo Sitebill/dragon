@@ -60,4 +60,7 @@ abstract class BaseValueObject
         $this->type = isset($column) ? $column->type : 'safe_string';
     }
 
+    public function __toString () {
+        return $this->value;
+    }
 }
