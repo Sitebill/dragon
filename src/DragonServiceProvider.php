@@ -6,6 +6,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Sitebill\Dragon\app\Middleware\Cors;
+use Sitebill\Dragon\Eloquent\DynamicModel;
 
 class DragonServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,17 @@ class DragonServiceProvider extends ServiceProvider
         // setup the routes
         $this->setupRoutes($this->app->router);
         $this->app->router->aliasMiddleware('dragon-cors', Cors::class);
+
+        // Register the service the package provides.
+        $this->app->bind(DynamicModel::class, function ($app, $parameters = []) {
+            if (!isset($parameters['table_name'])) {
+                throw new \Exception('please provide table_name parameter');
+            }
+
+            config()->set('sitebill.dragon.current_table', $parameters['table_name']);
+
+            return new DynamicModel();
+        });
     }
 
     /**

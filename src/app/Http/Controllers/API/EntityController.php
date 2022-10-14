@@ -4,10 +4,12 @@ namespace Sitebill\Dragon\app\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Sitebill\Dragon\app\Exceptions\DragonExceptions;
 use Sitebill\Dragon\app\Http\Controllers\API\Traits\Entity;
 use Sitebill\Dragon\app\Http\Controllers\API\Traits\ErrorReporting;
 use Sitebill\Dragon\app\Models\AnyModel;
+use Sitebill\Dragon\Eloquent\DynamicModel;
 
 class EntityController extends Controller
 {
@@ -32,10 +34,16 @@ class EntityController extends Controller
         $key_value = $this->request->get('key_value');
         $entity_uri = $this->request->get('entity_uri');
         $ql_items = $this->request->get('ql_items');
+        //dd(config('db'));
 
+        $app_name = 'data';
 
-        $anyModel = new AnyModel();
-        $anyModel->setTable($app_name);
+        $anyModel = App::make(DynamicModel::class, ['table_name' => $app_name]);
+
+        //$model = app($app_name);
+
+        //$anyModel = new AnyModel();
+        //$anyModel->setTable($app_name);
         $ra['rows'] = $anyModel->take(3)->get()->toArray();
 
         return $ra;
