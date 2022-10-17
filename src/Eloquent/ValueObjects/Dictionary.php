@@ -8,6 +8,7 @@ class Dictionary
         'primary_key' => PrimaryKey::class,
         'select_box' => SelectBox::class,
         'safe_string' => SafeString::class,
+        'select_by_query' => SelectByQuery::class,
     ];
 
 }

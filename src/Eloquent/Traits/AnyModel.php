@@ -3,6 +3,7 @@
 namespace Sitebill\Dragon\Eloquent\Traits;
 
 use Sitebill\Dragon\Eloquent\Casts\BaseCast;
+use Sitebill\Dragon\Eloquent\DragonQueryBuilder;
 use Sitebill\Dragon\Eloquent\TableColumnsStorage;
 
 trait AnyModel
@@ -26,4 +27,13 @@ trait AnyModel
     {
         $this->casts[$attribute] = $castClass;
     }
+
+    protected function newBaseQueryBuilder()
+    {
+        $connection = $this->getConnection();
+        return new DragonQueryBuilder(
+            $connection, $connection->getQueryGrammar(), $connection->getPostProcessor()
+        );
+    }
+
 }

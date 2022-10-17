@@ -4,7 +4,6 @@ namespace Sitebill\Dragon\Eloquent;
 
 use Exception;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Config;
 
 /**
  * Thanks https://github.com/laracraft-tech/laravel-dynamic-model
