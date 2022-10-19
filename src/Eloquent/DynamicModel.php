@@ -3,6 +3,7 @@
 namespace Sitebill\Dragon\Eloquent;
 
 use Exception;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 
 /**
@@ -42,6 +43,8 @@ class DynamicModel extends Model
 
     protected $guarded = [];
 
+    private static $schemaTable = [];
+
     /**
      * important! - attributes need to be passed,
      * cause of new instance generation inside laravel
@@ -58,20 +61,59 @@ class DynamicModel extends Model
             please use service container: App::make(DynamicModel::class, ['table_name' => 'foo'])");
         }
 
-        $this->table = $table;
+        $this->table = strtolower($table);
 
-        if (!Schema::hasTable($this->table)) {
-            throw new Exception("The table you provided to the DynamicModel does not exists! Please create it first!");
+        $schema = $this->getTableSchema($this->table);
+
+        $this->primaryKey = $schema['primaryKeyName'];
+        $this->incrementing = $schema['incrementing'];
+        $this->keyType = $schema['keyType'];
+        $this->routeKeyName = $schema['routeKeyName'];
+    }
+
+    private function getTableSchema ( $table ) {
+        if ( !isset(self::$schemaTable[$table]) ) {
+            self::$schemaTable = Cache::remember('users', 3600, function () {
+                return $this->loadSchema();
+            });
         }
-        $connection = Schema::getConnection();
-        $table_name_with_prefix = $connection->getTablePrefix().$table;
-        $table = $connection->getDoctrineSchemaManager()->listTableDetails($table_name_with_prefix);
-        $primaryKeyName = $table->getPrimaryKey()->getColumns()[0];
-        $primaryColumn = $connection->getDoctrineColumn($table_name_with_prefix, $primaryKeyName);
+        if ( !isset(self::$schemaTable[$table]) ) {
+            throw new Exception("The table you provided to the DynamicModel does not exists! Please create it first! table = ".$table);
+        }
+        return self::$schemaTable[$table];
+    }
 
-        $this->primaryKey = $primaryKeyName;
-        $this->incrementing = $primaryColumn->getAutoincrement();
-        $this->keyType = ($primaryColumn->getType()->getName() === 'string') ? 'string' : 'integer';
-        $this->routeKeyName = $primaryColumn->getName();
+    private function loadSchema () {
+        $schemaTable = [];
+        $connection = Schema::getConnection();
+        $tables = $connection->getDoctrineSchemaManager()->listTableNames();
+        foreach ($tables as $id => $table) {
+            $tableNameWithoutPrefix = str_replace($connection->getTablePrefix(), '', $table);
+            $table_details = $connection->getDoctrineSchemaManager()->listTableDetails($table);
+            if ( $table_details->getPrimaryKey() != null ) {
+                $primaryKeyName = $table_details->getPrimaryKey()->getColumns()[0];
+                $primaryColumn = $connection->getDoctrineColumn($table, $primaryKeyName);
+                $incrementing = $primaryColumn->getAutoincrement();
+                $keyType = ($primaryColumn->getType()->getName() === 'string') ? 'string' : 'integer';
+                $routeKeyName = $primaryColumn->getName();
+            } else {
+                $primaryKeyName = null;
+                $primaryColumn = null;
+                $incrementing = null;
+                $keyType = null;
+                $routeKeyName = null;
+            }
+
+            $schemaTable[$tableNameWithoutPrefix] = [
+                'tableNameWithoutPrefix' => $tableNameWithoutPrefix,
+                'tableDetails' => $table_details,
+                'incrementing' => $incrementing,
+                'keyType' => $keyType,
+                'primaryKeyName' => $primaryKeyName,
+                'primaryColumn' => $primaryColumn,
+                'routeKeyName' => $routeKeyName,
+            ];
+        }
+        return $schemaTable;
     }
 }
