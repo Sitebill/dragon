@@ -63,7 +63,7 @@ export class GridComponent implements OnInit {
                 {
                     headerName: rowItem[column] && rowItem[column].title ? rowItem[column].title : column,
                     colId: column,
-                    valueGetter: safeStringValueGetter,
+                    valueGetter: chooseValueGetter,
                 }
             );
         });
@@ -91,9 +91,19 @@ export class GridComponent implements OnInit {
 }
 
 function primaryKeyValueGetter(params: ValueGetterParams) {
-    return safeStringValueGetter(params);
+    return chooseValueGetter(params);
 }
-function safeStringValueGetter(params: ValueGetterParams) {
+function chooseValueGetter(params: ValueGetterParams) {
     const colId = params.colDef.colId ? params.colDef.colId : '';
-    return params.data && params.data[colId] ? params.data[colId]['value'] : null;
+    const type = params.data && params.data[colId] && params.data[colId]['type'] ? params.data[colId]['type'] : 'safe_string';
+    let result = null;
+    switch ( type ) {
+        case 'select_by_query':
+            result = params.data[colId]['value_string'] ? params.data[colId]['value_string'] : null;
+            break;
+        default:
+            result = params.data && params.data[colId] && params.data[colId]['value'] ? params.data[colId]['value'] : null;
+
+    }
+    return result;
 }
