@@ -73,7 +73,7 @@ class DynamicModel extends Model
 
     private function getTableSchema ( $table ) {
         if ( !isset(self::$schemaTable[$table]) ) {
-            self::$schemaTable = Cache::remember('users', 3600, function () {
+            self::$schemaTable = Cache::remember('schemaTable', 3600, function () {
                 return $this->loadSchema();
             });
         }

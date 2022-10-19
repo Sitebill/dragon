@@ -7,6 +7,7 @@ use Sitebill\Dragon\Helpers\DragonHelper;
 
 class SelectByQuery extends BaseValueObject
 {
+    private static $dictionary = [];
     /**
      * @param  \Sitebill\Dragon\Eloquent\Model  $model
      * @param  string  $key
@@ -20,9 +21,19 @@ class SelectByQuery extends BaseValueObject
         $this->value_string = $this->getValueStringByKey($model, $key, $value, $attributes, $column);
     }
 
-    public function getValueStringByKey ( $model, $key, $value, $attributes, Column $column) {
+    private function getDictionary ( $name, Column $column ) {
+        if ( isset(self::$dictionary[$column->primary_key_table]) ) {
+            return self::$dictionary[$column->primary_key_table];
+        }
         $dataModel = DragonHelper::getDynamicModel($column->primary_key_table);
-        $records = $dataModel->pluck($column->value_name, $column->primary_key_name)->toArray();
+        self::$dictionary[$column->primary_key_table] = $dataModel->pluck($column->value_name, $column->primary_key_name)->toArray();
+        return self::$dictionary[$column->primary_key_table];
+    }
+
+
+    public function getValueStringByKey ( $model, $key, $value, $attributes, Column $column) {
+        $records = $this->getDictionary($column->primary_key_table, $column);
+
         if ( $records and isset($records[$value]) ) {
             return $records[$value];
         }
