@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalWrappersComponent } from './modal-wrappers.component';
+import { ModalGridComponent } from './modal-grid.component';
 
-describe('ModalWrappersComponent', () => {
-  let component: ModalWrappersComponent;
-  let fixture: ComponentFixture<ModalWrappersComponent>;
+describe('ModalGridComponent', () => {
+  let component: ModalGridComponent;
+  let fixture: ComponentFixture<ModalGridComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModalWrappersComponent ]
+      declarations: [ ModalGridComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ModalWrappersComponent);
+    fixture = TestBed.createComponent(ModalGridComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

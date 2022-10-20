@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ModalWrappersComponent } from './modal-wrappers.component';
+import { ModalFormComponent } from './modal-form/modal-form.component';
+import { ModalGridComponent } from './modal-grid/modal-grid.component';
+import {FormModule} from "../form/form.module";
 
 
 
 @NgModule({
   declarations: [
-    ModalWrappersComponent
+    ModalFormComponent,
+    ModalGridComponent
   ],
-  imports: [
-    CommonModule
-  ]
+    imports: [
+        CommonModule,
+        FormModule
+    ]
 })
 export class ModalWrappersModule { }
