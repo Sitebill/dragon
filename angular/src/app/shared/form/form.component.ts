@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Entity} from "../models/entity.model";
 
 @Component({
     selector: 'dg-form',
@@ -6,6 +7,8 @@ import {Component, OnInit} from '@angular/core';
     styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit {
+    @Input()
+    entity!: Entity;
 
     constructor() {
     }

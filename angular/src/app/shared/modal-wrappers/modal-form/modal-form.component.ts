@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {ModalContractModel} from "../../models/modal-contract.model";
 
 @Component({
   selector: 'dg-modal-form',
@@ -7,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModalFormComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+      @Inject(MAT_DIALOG_DATA) public _data: ModalContractModel
+  ) { }
 
   ngOnInit(): void {
   }
