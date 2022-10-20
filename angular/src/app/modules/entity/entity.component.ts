@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Entity} from "../../shared/models/entity.model";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {ModalWrappersComponent} from "../../shared/modal-wrappers/modal-wrappers.component";
 
 @Component({
     selector: 'app-entity',
@@ -11,7 +13,9 @@ export class EntityComponent implements OnInit {
     public dataEntity: Entity = new Entity;
     public columnsEntity: Entity = new Entity;
 
-    constructor() {
+    constructor(
+        protected dialog: MatDialog,
+    ) {
     }
 
     ngOnInit(): void {
@@ -29,4 +33,10 @@ export class EntityComponent implements OnInit {
 
     }
 
+    openModalForm() {
+        const dialogConfig = new MatDialogConfig();
+        let column = null;
+        dialogConfig.data = {column: column, entity: this.clientEntity};
+        this.dialog.open(ModalWrappersComponent, dialogConfig);
+    }
 }
