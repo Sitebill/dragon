@@ -23,8 +23,27 @@ class EntityController extends Controller
         } catch (DragonExceptions $e) {
             return $this->exceptionToJsonResponse($e);
         }
-
     }
+
+    public function show(Request $request)
+    {
+        $this->request = $request;
+        $id = 1;
+        try {
+            $data = $this->_load_data_one($this->request->get('app_name'), $id);
+            $data['success'] = true;
+            return response()->json($data);
+        } catch (DragonExceptions $e) {
+            return $this->exceptionToJsonResponse($e);
+        }
+    }
+    private function _load_data_one( $app_name, $id ) {
+        $ra = [];
+        $anyModel = DragonHelper::getDynamicModel($app_name);
+        $ra['item'] = $anyModel->first()->toArray();
+        return $ra;
+    }
+
 
     private function _load_data( $app_name ) {
         $model_name = $this->request->get('model_name');

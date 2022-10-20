@@ -17,5 +17,6 @@ Route::group([
 ], function () {
     Route::get('entity', [\Sitebill\Dragon\app\Http\Controllers\API\EntityController::class, 'test'])->name('dragon.api.entity.test');
     Route::post('entity', [\Sitebill\Dragon\app\Http\Controllers\API\EntityController::class, 'test'])->name('dragon.api.entity.test');
+    Route::post('entity/{id}', [\Sitebill\Dragon\app\Http\Controllers\API\EntityController::class, 'show'])->name('dragon.api.entity.show');
 });
 

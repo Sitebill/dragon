@@ -17,4 +17,9 @@ export class EntityService {
     fetch(entity: Entity): Observable<any> {
         return this.http.post(this.endpointService.get('entity'), entity);
     }
+    fetch_one(entity: Entity): Observable<any> {
+        let id = '1';
+        return this.http.post(this.endpointService.get('entity/' + id), entity);
+    }
+
 }
