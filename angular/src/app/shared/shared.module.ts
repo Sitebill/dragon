@@ -2,16 +2,19 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {GridModule} from "./grid/grid.module";
 import {EntityService} from "./services/entity.service";
+import {FormModule} from "./form/form.module";
 
 
 @NgModule({
     declarations: [],
     imports: [
         CommonModule,
-        GridModule
+        GridModule,
+        FormModule,
     ],
     exports: [
-        GridModule
+        GridModule,
+        FormModule
     ],
     providers: [
         EntityService
