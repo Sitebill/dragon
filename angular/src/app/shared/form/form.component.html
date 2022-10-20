@@ -1,2 +1,7 @@
 <p>form works!</p>
 <p *ngIf="entity">{{entity.table_name}}</p>
+
+<ng-template #tab_item let-tab="tab" let-form="form">
+    <div [formGroup]="form" fxLayout="row" fxLayoutAlign="start center"  class="flex_wrap" *ngIf="tabs">
+    </div>
+</ng-template>

@@ -5,6 +5,9 @@ import {EntityService} from "./services/entity.service";
 import {FormModule} from "./form/form.module";
 import {ModalWrappersModule} from "./modal-wrappers/modal-wrappers.module";
 import {MatDialogModule} from "@angular/material/dialog";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {ReactiveFormsModule} from "@angular/forms";
+import {MatMomentDateModule} from "@angular/material-moment-adapter";
 
 
 @NgModule({
@@ -14,7 +17,10 @@ import {MatDialogModule} from "@angular/material/dialog";
         MatDialogModule,
         GridModule,
         FormModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
         ModalWrappersModule,
+        MatMomentDateModule,
     ],
     exports: [
         GridModule,
