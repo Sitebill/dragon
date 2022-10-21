@@ -12,6 +12,7 @@ import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
         FormsModule,
         NgSelectModule,
         MatCheckboxModule,
+        FlexLayoutModule,
     ]
 })
 export class FormModule {

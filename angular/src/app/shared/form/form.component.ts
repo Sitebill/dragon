@@ -47,9 +47,9 @@ export class FormComponent implements OnInit {
 
     form: FormGroup;
     tabs: any;
-    tabs_keys = <string>{};
+    tabs_keys:string[] = [];
     records = <RowItem>{};
-    rows = <string>{};
+    rows:string[] = [];
     form_inited = false;
 
     // tabs_keys: string[];
@@ -95,7 +95,33 @@ export class FormComponent implements OnInit {
         this.entityService.fetch_one(this.entity)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: FormResponseModel) => {
-                console.log(result.item);
+                this.records = result.item;
+                console.log(result);
+
+                for (const [key_obj, value_obj] of Object.entries(result.item)) {
+                    try {
+                        this.records[key_obj] = new EntityItem(value_obj);
+                    } catch (e) {
+                        delete this.records[key_obj];
+                    }
+                }
+                this.entity.model = this.records;
+                this.tabs = result.tabs;
+                this.tabs_keys = Object.keys(result.tabs);
+
+                this.rows = Object.keys(result.item);
+
+                console.log(this.records);
+                this.init_form();
+
+/*
+                        this._data.model = this.records;
+                        // console.log(this.records);
+
+                        this.rows = Object.keys(result.data);
+
+*/
+
             });
 
     }
@@ -105,7 +131,7 @@ export class FormComponent implements OnInit {
         // Сначала нужно получить значение topic_id
         // В цикле, есть есть совпадения с active_in_topic, тогда применяем правила ОБЯЗАТЕЛЬНОСТИ
         // При смене типа в форме, надо перезапускать процесс показа/валидации элементов
-        let data = new Entity();
+        let data = this.entity;
 
 
         for (let i = 0; i < this.rows.length; i++) {
@@ -133,8 +159,9 @@ export class FormComponent implements OnInit {
             if (this.records[this.rows[i]].name == 'email') {
                 form_control_item.setValidators(Validators.email);
             }
-            // console.log(this.rows[i]);
-            // console.log(form_control_item);
+            console.log(this.rows[i]);
+            console.log(form_control_item);
+            console.log(i);
 
             this.form.addControl(this.rows[i], form_control_item);
 
@@ -229,12 +256,12 @@ export class FormComponent implements OnInit {
 
         }
 
+        this.form_inited = true;
+        this.count_visible_items();
         /*
         this.apply_topic_activity();
-        this.form_inited = true;
         this.after_form_inited();
          */
-        this.count_visible_items();
 
     }
 
@@ -579,7 +606,9 @@ export class FormComponent implements OnInit {
         this.fetchMore(columnName);
     }
 
-    onScroll({ end }, columnName: string) {
+    onScroll(event: any, columnName: string) {
+        // @todo: end нужно определить правильно (смотрим старый проект)
+        let end = event;
         if ( !this.options_storage[columnName] || !this.options_storage_buffer[columnName]) {
             return;
         }
@@ -598,7 +627,7 @@ export class FormComponent implements OnInit {
             distinctUntilChanged(),
             map(term => {
                 this.options_storage_buffer[columnName] = this.options_storage[columnName]
-                    .filter(item => item.value.includes(term))
+                    .filter((item: { value: string | string[]; }) => item.value.includes(term))
                     .slice(0, this.selectBufferSize);
 
                 this.termsearch = true;

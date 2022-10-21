@@ -41,6 +41,7 @@ class EntityController extends Controller
         $ra = [];
         $anyModel = DragonHelper::getDynamicModel($app_name);
         $ra['item'] = $anyModel->first()->toArray();
+        $ra['tabs']['Основное'] = array_keys($ra['item']);
         return $ra;
     }
 

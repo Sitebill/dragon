@@ -126,16 +126,16 @@
             [hidden]="records[x].hidden || records[x].type == 'hidden'"
         >
 
-            <span [ngSwitch]="records[x].type">
+            <span *ngIf="records[x]" [ngSwitch]="records[x].type">
 
                 <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
 
-                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'primary_key'" [hidden]="records[x].hidden">
+                <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'primary_key'" [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input class="disabled-text" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
                 </mat-form-field>
 
-                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'date'" [hidden]="records[x].hidden">
+                <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'date'" [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
@@ -144,14 +144,14 @@
                     </mat-datepicker>
                 </mat-form-field>
 
-                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dttime'" [hidden]="records[x].hidden">
+                <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'dttime'" [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" [ngxTimepicker]="picker" [format]="24" placeholder="{{records[x].title}}">
                     <mat-icon matSuffix>access_time</mat-icon>
                     <ngx-material-timepicker #picker></ngx-material-timepicker>
                 </mat-form-field>
 
-                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dtdatetime'" [hidden]="records[x].hidden">
+                <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'dtdatetime'" [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
@@ -160,7 +160,7 @@
                     </mat-datepicker>
                 </mat-form-field>
 
-                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'docuploads'">
+                <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'docuploads'">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input [formControlName]="records[x].name" matInput [hidden]="true">
                     <ng-container *ngIf="records[x].value.length > 0">
@@ -170,7 +170,7 @@
                     </ng-container>
                 </mat-form-field>
 
-                <mat-form-field appearance="{{get_appearance()}}" *ngSwitchCase="'dtdate'" [hidden]="records[x].hidden">
+                <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'dtdate'" [hidden]="records[x].hidden">
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
@@ -427,7 +427,7 @@
 
 
 
-                <mat-form-field appearance="{{get_appearance()}}" [matTooltip]="records[x].title"  [hidden]="records[x].hidden" *ngSwitchDefault>
+                <mat-form-field [appearance]="get_appearance()" [matTooltip]="records[x].title"  [hidden]="records[x].hidden" *ngSwitchDefault>
                     <mat-label [innerHTML]="records[x].title"></mat-label>
                     <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
