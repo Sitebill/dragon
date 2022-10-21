@@ -1,7 +1,17 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { FormComponent } from './form.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatIconModule} from "@angular/material/icon";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {NgSelectModule} from "@ng-select/ng-select";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 
 @NgModule({
@@ -13,7 +23,18 @@ import {ReactiveFormsModule} from "@angular/forms";
     ],
     imports: [
         CommonModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatTabsModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatProgressSpinnerModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        NgxMaterialTimepickerModule,
+        MatTooltipModule,
+        FormsModule,
+        NgSelectModule,
+        MatCheckboxModule,
     ]
 })
 export class FormModule {

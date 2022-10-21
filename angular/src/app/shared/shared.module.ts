@@ -8,6 +8,8 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 
 @NgModule({
@@ -21,6 +23,7 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
         MatFormFieldModule,
         ModalWrappersModule,
         MatMomentDateModule,
+        MatDatepickerModule,
     ],
     exports: [
         GridModule,
