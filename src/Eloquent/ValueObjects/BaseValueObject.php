@@ -57,6 +57,7 @@ abstract class BaseValueObject
     {
         $this->value = $value;
         $this->title = isset($column) ? $column->title : $key;
+        $this->name = $key;
         $this->type = isset($column) ? $column->type : 'safe_string';
     }
 

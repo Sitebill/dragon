@@ -102,6 +102,7 @@ export class FormComponent implements OnInit {
                     try {
                         this.records[key_obj] = new EntityItem(value_obj);
                     } catch (e) {
+                        console.log('delete', key_obj);
                         delete this.records[key_obj];
                     }
                 }
@@ -159,10 +160,13 @@ export class FormComponent implements OnInit {
             if (this.records[this.rows[i]].name == 'email') {
                 form_control_item.setValidators(Validators.email);
             }
+/*
+
             console.log(this.rows[i]);
             console.log(form_control_item);
             console.log(i);
 
+*/
             this.form.addControl(this.rows[i], form_control_item);
 
             if (this.is_date_type(this.records[this.rows[i]].type) && this.records[this.rows[i]].value == 'now') {
@@ -253,9 +257,16 @@ export class FormComponent implements OnInit {
                 this.records[this.rows[i]].value = data.get_default_value(this.rows[i]);
                 this.form.controls[this.rows[i]].patchValue(this.records[this.rows[i]].value);
             }
-
         }
+/*
 
+        console.log('records', this.records);
+        console.log('controls', this.form.controls);
+        console.log(this.tabs);
+        console.log(this.tabs_keys);
+        console.log('lets go');
+
+*/
         this.form_inited = true;
         this.count_visible_items();
         /*

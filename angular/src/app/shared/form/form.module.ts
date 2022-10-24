@@ -13,6 +13,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {MatInputModule} from "@angular/material/input";
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
         NgSelectModule,
         MatCheckboxModule,
         FlexLayoutModule,
+        MatInputModule,
     ]
 })
 export class FormModule {
