@@ -73,14 +73,25 @@ class DynamicModel extends Model
 
     private function getTableSchema ( $table ) {
         if ( !isset(self::$schemaTable[$table]) ) {
+
             self::$schemaTable = Cache::remember('schemaTable', 3600, function () {
                 return $this->loadSchema();
             });
+
+            // self::$schemaTable = $this->loadSchema();
         }
         if ( !isset(self::$schemaTable[$table]) ) {
             throw new Exception("The table you provided to the DynamicModel does not exists! Please create it first! table = ".$table);
         }
+        TableColumnsStorage::setNativeColumns($table, $this->getTableColumns($table));
         return self::$schemaTable[$table];
+    }
+
+    public function getTableColumns ($table) {
+        if ( isset(self::$schemaTable[$table]) ) {
+            return self::$schemaTable[$table]['tableColumns'];
+        }
+        return [];
     }
 
     private function loadSchema () {
@@ -90,6 +101,7 @@ class DynamicModel extends Model
         foreach ($tables as $id => $table) {
             $tableNameWithoutPrefix = str_replace($connection->getTablePrefix(), '', $table);
             $table_details = $connection->getDoctrineSchemaManager()->listTableDetails($table);
+            $table_columns = array_keys($connection->getDoctrineSchemaManager()->listTableColumns($table));
             if ( $table_details->getPrimaryKey() != null ) {
                 $primaryKeyName = $table_details->getPrimaryKey()->getColumns()[0];
                 $primaryColumn = $connection->getDoctrineColumn($table, $primaryKeyName);
@@ -112,6 +124,7 @@ class DynamicModel extends Model
                 'primaryKeyName' => $primaryKeyName,
                 'primaryColumn' => $primaryColumn,
                 'routeKeyName' => $routeKeyName,
+                'tableColumns' => $table_columns,
             ];
         }
         return $schemaTable;

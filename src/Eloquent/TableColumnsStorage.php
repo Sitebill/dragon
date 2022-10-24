@@ -6,6 +6,7 @@ class TableColumnsStorage
 {
     private static $storage = [];
     private static $storageColumns = [];
+    private static $storageNativeColumns = [];
 
     public static function get ( $table_name )
     {
@@ -18,6 +19,17 @@ class TableColumnsStorage
             }
         }
         return self::$storage[$table_name];
+    }
+
+    public static function setNativeColumns ( $table_name, $columns ) {
+        self::$storageNativeColumns[$table_name] = $columns;
+    }
+
+    public static function getNativeColumns ( $table_name ) {
+        if ( isset(self::$storageNativeColumns[$table_name]) ) {
+            return self::$storageNativeColumns[$table_name];
+        }
+        return [];
     }
 
     public static function getColumns ( $table_name )
