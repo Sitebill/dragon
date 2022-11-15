@@ -1,6 +1,14 @@
-<a routerLink="models-editor">ModelsEditor</a> |
-<a routerLink="entity">Entity</a> |
-<a routerLink="form">Form</a>
-
-
-<router-outlet></router-outlet>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <nav mat-tab-nav-bar ngClass = "tabs">
+                <a mat-tab-link routerLink="/models-editor" [active]="rla.isActive"  #rla="routerLinkActive" routerLinkActive="active-link">Models Editor</a>
+                <a mat-tab-link routerLink="/entity"  [active]="rla.isActive"  #rla="routerLinkActive" routerLinkActive="active-link">Grid</a>
+                <a mat-tab-link routerLink="/form"  [active]="rla.isActive"  #rla="routerLinkActive" routerLinkActive="active-link">Form</a>
+            </nav>
+        </div>
+        <div class="col-12 p-2">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

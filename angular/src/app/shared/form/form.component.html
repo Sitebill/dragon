@@ -1,6 +1,3 @@
-<p>form works!</p>
-<p *ngIf="entity">{{entity.table_name}}</p>
-
 <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css" type="text/css">
 
 <ng-container *ngIf="!rows && !error_message">
@@ -28,11 +25,6 @@
                 <ng-container *ngIf="!entity.get_key_value()">Создать запись</ng-container>
             </span>
                 <span class="title dialog-title" *ngIf="entity.get_title() !== null">Создание записи {{entity.get_title()}}</span>
-                <div class="columnsButtonWrapper">
-                    <button mat-button (click)="setNumberOfColumns(3)">авто</button>
-                    <button mat-button (click)="setNumberOfColumns(2)">&#9776; &#9776;</button>
-                    <button mat-button (click)="setNumberOfColumns(1)">&#9776;</button>
-                </div>
                 <button mat-icon-button (click)="close()" aria-label="Закрыть">
                     <mat-icon>close</mat-icon>
                 </button>
@@ -113,6 +105,8 @@
 
 <ng-template #tab_item let-tab="tab" let-form="form">
     <div [formGroup]="form" fxLayout="column" fxLayoutAlign="start start"  class="flex_wrap" *ngIf="tabs">
+
+<!--
         <form class="row g-3">
             <div class="col-md-6">
                 <label for="inputEmail4" class="form-label">Email</label>
@@ -157,8 +151,19 @@
                 <button type="submit" class="btn btn-primary">Sign in</button>
             </div>
         </form>
+-->
 
+        <div class="row g-3">
         <ng-container *ngFor="let x of tabs[tab]">
+                <div class="col-md-6" *ngIf="x && records[x] && records[x].name">
+                    <label for="{{records[x].name}}" class="form-label">{{records[x].title}}</label>
+                    <input type="text" class="form-control" [formControlName]="records[x].name" id="{{records[x].name}}">
+                </div>
+        </ng-container>
+        </div>
+
+        <ng-container *ngIf="false">
+            <ng-container *ngFor="let x of tabs[tab]">
             <span
                 *ngIf="records[x] && records[x].name"
                 class="{{get_flex_padding('xl', entity.get_form_type(), records[x])}}"
@@ -174,6 +179,7 @@
                 <span *ngIf="records[x]" [ngSwitch]="records[x].type">
 
                     <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
+
 
                     <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'primary_key'" [hidden]="records[x].hidden">
                         <mat-label [innerHTML]="records[x].title"></mat-label>
@@ -481,6 +487,7 @@
                 </span>
             </span>
 
+            </ng-container>
         </ng-container>
     </div>
 </ng-template>

@@ -14,6 +14,8 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -39,6 +41,8 @@ import {MatInputModule} from "@angular/material/input";
         MatCheckboxModule,
         FlexLayoutModule,
         MatInputModule,
+        MatButtonModule,
+        MatDialogModule,
     ]
 })
 export class FormModule {
