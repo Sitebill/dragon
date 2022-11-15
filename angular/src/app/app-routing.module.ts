@@ -10,6 +10,10 @@ const routes: Routes = [
         path: 'entity',
         loadChildren: () => import('./modules/entity/entity.module').then(m => m.EntityModule),
     },
+    {
+        path: 'form',
+        loadChildren: () => import('./tests/test-form/test-form.module').then(m => m.TestFormModule),
+    },
 ];
 
 @NgModule({
