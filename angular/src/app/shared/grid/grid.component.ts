@@ -46,14 +46,16 @@ export class GridComponent implements OnInit {
     // Example load data from sever
     onGridReady(params: GridReadyEvent) {
         let entity = this.entity;
+        console.log(params);
 
         this.entityService.fetch(entity)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: GridResponseModel) => {
+                console.log('RES', result);
                 this.gridData = result.rows;
                 let columns = Object.keys(this.gridData[0]);
                 this.columnDefs = this.composecolumnDefs(columns, this.gridData[0]);
-            });
+        });
     }
 
     composecolumnDefs (columns: string[], rowItem: RowItem): Array<ColDef> {
@@ -68,6 +70,7 @@ export class GridComponent implements OnInit {
             );
         });
         return columnDefs;
+        console.log('COL', columnDefs);
     }
 
     // Example of consuming Grid Event
@@ -106,4 +109,5 @@ function chooseValueGetter(params: ValueGetterParams) {
 
     }
     return result;
+    console.log('RES-2', result);
 }
