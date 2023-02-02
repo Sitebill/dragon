@@ -8,6 +8,8 @@ import { AuthInterceptor } from './shared/services/auth/auth.interceptor';
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatTabsModule} from "@angular/material/tabs";
+import {FuseMockApiModule} from "./lib/mock-api";
+import { mockApiServices } from './tests/mock-api';
 
 @NgModule({
     declarations: [
@@ -19,6 +21,7 @@ import {MatTabsModule} from "@angular/material/tabs";
         BrowserAnimationsModule,
         NgbModule,
         MatTabsModule,
+        FuseMockApiModule.forRoot(mockApiServices),
     ],
     providers: [
         {

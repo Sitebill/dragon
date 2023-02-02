@@ -10,6 +10,8 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import {FuseMockApiModule} from "../lib/mock-api";
+import {mockApiServices} from "../tests/mock-api";
 
 
 @NgModule({
@@ -24,6 +26,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         ModalWrappersModule,
         MatMomentDateModule,
         MatDatepickerModule,
+        FuseMockApiModule.forRoot(mockApiServices),
     ],
     exports: [
         GridModule,
