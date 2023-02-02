@@ -70,7 +70,6 @@ export class GridComponent implements OnInit {
             );
         });
         return columnDefs;
-        console.log('COL', columnDefs);
     }
 
     // Example of consuming Grid Event
@@ -109,5 +108,4 @@ function chooseValueGetter(params: ValueGetterParams) {
 
     }
     return result;
-    console.log('RES-2', result);
 }

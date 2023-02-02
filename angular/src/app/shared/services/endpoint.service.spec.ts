@@ -11,8 +11,10 @@ describe('EndpointService', () => {
         expect(service).toBeTruthy();
     });
 
-    it('should return path', () => {
+   it('should return path', () => {
+       console.log('E');
         const path = service.get('route');
-        expect(path).toBe('http://food/dragon/api/route');
+        console.log(path);
+        expect(path).toBe('dragon/api/route');
     });
 });

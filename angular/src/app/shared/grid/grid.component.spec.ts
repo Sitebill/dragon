@@ -25,8 +25,8 @@ describe('GridComponent', () => {
   // }
 
   const fakeEntityService = jasmine.createSpyObj('fakeEntityService', {
-      'fetch': of(''),
-      'fetch-one': of('')
+      'fetch': of({rows: []}),
+      'fetch-one': of({rows: []})
   });
 
   beforeEach(async () => {
@@ -49,12 +49,12 @@ describe('GridComponent', () => {
   });
 
    xit('should onGridReady been called', () => {
-        const params: GridReadyEvent = new class implements GridReadyEvent<any> {
-            api = new GridApi();
-            columnApi = new ColumnApi();
-            context: any;
-            type= 'gridReady';
-        }
+        const params: GridReadyEvent =  {
+            api: new GridApi(),
+            columnApi: new ColumnApi(),
+            context: {},
+            type: 'gridReady',
+        } as GridReadyEvent;
         component.onGridReady(params );
         fixture.detectChanges();
         expect(fakeEntityService.fetch).toHaveBeenCalled();
