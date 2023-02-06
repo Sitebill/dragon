@@ -1,3 +1,11 @@
 ag-grid-angular {
     height: 250px !important;
+    .ag-header {
+        background-color: red !important;
+        .ag-header-cell {
+            background-color: green !important;
+        }
+    }
+
+
 }

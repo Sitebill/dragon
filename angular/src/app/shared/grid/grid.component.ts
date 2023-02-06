@@ -2,7 +2,7 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {CellClickedEvent, ColDef, GridReadyEvent, ValueGetterParams} from "ag-grid-community";
 import {Observable, Subject, takeUntil} from "rxjs";
 import {AgGridAngular} from "ag-grid-angular";
-import {EntityService} from "../services/entity.service";
+import {EntityService} from "../services/entity/entity.service";
 import {Entity} from "../models/entity.model";
 import {GridResponseModel, RowItem} from "../models/responses/grid-response.model";
 
@@ -46,12 +46,17 @@ export class GridComponent implements OnInit {
     // Example load data from sever
     onGridReady(params: GridReadyEvent) {
         let entity = this.entity;
-        console.log(params);
+        // console.log(params);
+        // console.log("ENTITY",entity);
+        //
+        // console.log("SERVICE", this.entityService.fetch(entity));
 
         this.entityService.fetch(entity)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: GridResponseModel) => {
                 console.log('RES', result);
+                console.log('ROW', result.rows[0]);
+                // if (result.rows.length < 10) return; // test fails with this code
                 this.gridData = result.rows;
                 let columns = Object.keys(this.gridData[0]);
                 this.columnDefs = this.composecolumnDefs(columns, this.gridData[0]);
@@ -69,6 +74,7 @@ export class GridComponent implements OnInit {
                 }
             );
         });
+        console.log('DEF', columnDefs[0]);
         return columnDefs;
     }
 

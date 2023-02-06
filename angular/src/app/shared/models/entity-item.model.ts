@@ -46,6 +46,7 @@ export class EntityItem {
     multiple: boolean;
 
     constructor(item:any = null) {
+        // console.trace('ITEM', item);
         this.action = item.action;
         this.active_in_topic = item.active_in_topic;
         this.active_in_topic_array = null;

@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "test-coverage": "ng test --code-coverage"
+    "test-coverage": "ng test --code-coverage",
+    "test-singl": "ng test --include src/app/shared/grid --code-coverage"
   },
   "private": true,
   "dependencies": {

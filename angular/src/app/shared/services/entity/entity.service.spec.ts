@@ -1,9 +1,9 @@
 import {EntityService} from './entity.service';
 import {HttpClient} from "@angular/common/http";
-import {EndpointService} from "./endpoint.service";
+import {EndpointService} from "../endpoint/endpoint.service";
 import {TestBed} from '@angular/core/testing';
-import {Entity} from '../models/entity.model';
-import {MockHttpClient} from './mock-http-client';
+import {Entity} from '../../models/entity.model';
+import {MockHttpClient} from '../../../mocks/mock-http-client';
 
 describe('EntityService', () => {
     let service: EntityService;

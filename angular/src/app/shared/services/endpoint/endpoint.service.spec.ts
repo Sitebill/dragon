@@ -12,9 +12,7 @@ describe('EndpointService', () => {
     });
 
    it('should return path', () => {
-       console.log('E');
         const path = service.get('route');
-        console.log(path);
         expect(path).toBe('dragon/api/route');
     });
 });
