@@ -3,13 +3,15 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { GridComponent } from './grid.component';
 import {EntityService} from "../services/entity/entity.service";
-import {ColumnApi, GridApi, GridReadyEvent} from 'ag-grid-community';
+import {ColumnApi, GridApi, GridReadyEvent, ValueGetterParams} from 'ag-grid-community';
 import {EntityItem} from '../models/entity-item.model';
-import {MockEntityService} from '../../mocks/mock-entity-service';
-import {MockItem} from '../../mocks/mock-item.model';
+import {MockEntityService} from '../../mocks/mock-entity.service';
+import {MockItemModel} from '../../mocks/mock-item.model';
+import {MockValueGetterParamsModel} from '../../mocks/mock-value-getter-params.model';
 import {of} from 'rxjs';
 import {RowItem} from '../models/responses/grid-response.model';
 import {Entity} from '../models/entity.model';
+import {AgGridAngular} from "ag-grid-angular";
 
 describe('GridComponent', () => {
   let grid: GridComponent;
@@ -21,6 +23,7 @@ describe('GridComponent', () => {
   let params: GridReadyEvent;
   let gridData: RowItem[];
   let columns: string[];
+  let valueGetterParams: ValueGetterParams;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -28,6 +31,7 @@ describe('GridComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {provide: EntityService, useClass: MockEntityService},
+         {provide: AgGridAngular},
       ]
     })
     .compileComponents();
@@ -35,7 +39,7 @@ describe('GridComponent', () => {
     fixture = TestBed.createComponent(GridComponent);
     grid= fixture.componentInstance;
     entityService = TestBed.inject(EntityService);
-    mockRowItem = new MockItem();
+    mockRowItem = new MockItemModel();
     entity = new Entity();
     entityItem = new EntityItem(mockRowItem);
     gridData = [{item: entityItem}];
@@ -46,6 +50,7 @@ describe('GridComponent', () => {
           context: {},
           type: 'gridReady',
       } as GridReadyEvent;
+    valueGetterParams = new MockValueGetterParamsModel();
     spyOn(entityService, 'fetch').and.returnValue(of({ rows: [{item: entityItem}]}));
     fixture.detectChanges();
   });
@@ -81,13 +86,78 @@ describe('GridComponent', () => {
 
     it('should composecolumnDefs use title', () => {
         const controlColumnDefs = [{ "headerName": "title", "colId": "item", 'valueGetter': grid.cvg }];
-        mockRowItem = new MockItem('title');
+        mockRowItem = new MockItemModel('title');
         gridData = [{item: new EntityItem(mockRowItem)}];
         columns = Object.keys(gridData[0]);
         const columnDefs = grid.composecolumnDefs(columns, gridData[0]);
         spyOn(grid, 'composecolumnDefs').and.returnValue(columnDefs);
         expect(columnDefs[0].headerName).toBe('title');
         expect(columnDefs).toEqual(controlColumnDefs);
+    });
+
+    it('should cvg been called with select_by_query', () => {
+        valueGetterParams = new MockValueGetterParamsModel('colId', 'select_by_query','test_value_string', 'test_value');
+        const value = grid.cvg(valueGetterParams);
+        spyOn(grid, 'cvg').and.returnValue(value);
+        grid.cvg(valueGetterParams);
+        expect( grid.cvg).toHaveBeenCalledWith(valueGetterParams);
+        expect(value).toBe('test_value_string');
+    });
+
+    it('should cvg been called with select_by_query without test_value_string', () => {
+        valueGetterParams = new MockValueGetterParamsModel('colId', 'select_by_query');
+        const value = grid.cvg(valueGetterParams);
+        spyOn(grid, 'cvg').and.returnValue(value);
+        grid.cvg(valueGetterParams);
+        expect( grid.cvg).toHaveBeenCalledWith(valueGetterParams);
+        expect(value).toBe(null);
+    });
+
+    it('should cvg been called with test_type', () => {
+        valueGetterParams = new MockValueGetterParamsModel('colId', 'test_type','test_value_string', 'test_value');
+        const value = grid.cvg(valueGetterParams);
+        spyOn(grid, 'cvg').and.returnValue(value);
+        grid.cvg(valueGetterParams);
+        expect( grid.cvg).toHaveBeenCalledWith(valueGetterParams);
+        expect(value).toBe('test_value');
+    });
+
+    it('should cvg been called with test_type without test_value', () => {
+        valueGetterParams = new MockValueGetterParamsModel('colId', 'test_type','test_value_string' );
+        const value = grid.cvg(valueGetterParams);
+        spyOn(grid, 'cvg').and.returnValue(value);
+        grid.cvg(valueGetterParams);
+        expect( grid.cvg).toHaveBeenCalledWith(valueGetterParams);
+        expect(value).toBe(null);
+    });
+
+    it('should cvg been called without colId and value', () => {
+        const value = grid.cvg(valueGetterParams);
+        spyOn(grid, 'cvg').and.returnValue(value);
+        grid.cvg(valueGetterParams);
+        expect(value).toBe(null);
+    });
+
+    it('should cvg been called without type', () => {
+        valueGetterParams = new MockValueGetterParamsModel('colId', '','', 'test_value');
+        const value = grid.cvg(valueGetterParams);
+        spyOn(grid, 'cvg').and.returnValue(value);
+        grid.cvg(valueGetterParams);
+        expect(value).toBe('test_value');
+    });
+
+    it('should cvg been called in pkvg', () => {
+        const value = grid.pkvg(valueGetterParams);
+        spyOn(grid, 'pkvg');
+        expect(value).toBe(null);
+        // grid.agGrid.api.deselectAll()
+    });
+
+    it('should clearSelection been called', () => {
+        // grid.clearSelection();
+        spyOn(grid, 'clearSelection');
+        console.log('AG', grid.agGrid);
+        // expect(grid.clearSelection).toHaveBeenCalled();
     });
 
 });
