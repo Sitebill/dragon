@@ -2,7 +2,7 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {CellClickedEvent, ColDef, GridReadyEvent, ValueGetterParams} from "ag-grid-community";
 import {Observable, Subject, takeUntil} from "rxjs";
 import {AgGridAngular} from "ag-grid-angular";
-import {EntityService} from "../services/entity.service";
+import {EntityService} from "../services/entity/entity.service";
 import {Entity} from "../models/entity.model";
 import {GridResponseModel, RowItem} from "../models/responses/grid-response.model";
 
@@ -46,19 +46,31 @@ export class GridComponent implements OnInit {
     // Example load data from sever
     onGridReady(params: GridReadyEvent) {
         let entity = this.entity;
+        // console.log(params);
+        // console.log("ENTITY",entity);
 
         this.entityService.fetch(entity)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: GridResponseModel) => {
+                // console.log('RES', result);
+                // console.log('ROW', result.rows[0]);
+                // if (result.rows.length < 10) return; // test fails with this code
                 this.gridData = result.rows;
                 let columns = Object.keys(this.gridData[0]);
+                // columns.push('grg'); // test fails with this code
                 this.columnDefs = this.composecolumnDefs(columns, this.gridData[0]);
-            });
+                // if (!this.columnDefs) return;
+                //console.log('DEF', this.columnDefs);
+        });
     }
 
     composecolumnDefs (columns: string[], rowItem: RowItem): Array<ColDef> {
+        //console.log('COL', columns);
         const columnDefs: Array<ColDef> = [];
         columns.forEach( column => {
+            if (rowItem[column] && rowItem[column].title ) {
+                //console.log('TITLE', rowItem[column].title);
+            }
             columnDefs.push(
                 {
                     headerName: rowItem[column] && rowItem[column].title ? rowItem[column].title : column,
@@ -67,6 +79,7 @@ export class GridComponent implements OnInit {
                 }
             );
         });
+        //console.log('COLDEF', columnDefs);
         return columnDefs;
     }
 
@@ -79,6 +92,8 @@ export class GridComponent implements OnInit {
     clearSelection(): void {
         this.agGrid.api.deselectAll();
     }
+
+    cvg = chooseValueGetter;
 
     /**
      * On destroy

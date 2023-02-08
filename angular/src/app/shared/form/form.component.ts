@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Entity} from "../models/entity.model";
 import {Subject, takeUntil} from "rxjs";
-import {EntityService} from "../services/entity.service";
+import {EntityService} from "../services/entity/entity.service";
 import {FormResponseModel} from "../models/responses/form-response.model";
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {RowItem} from "../models/responses/grid-response.model";
