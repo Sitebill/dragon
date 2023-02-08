@@ -60,15 +60,17 @@ export class GridComponent implements OnInit {
                 // columns.push('grg'); // test fails with this code
                 this.columnDefs = this.composecolumnDefs(columns, this.gridData[0]);
                 // if (!this.columnDefs) return;
-                console.log('DEF', this.columnDefs);
+                //console.log('DEF', this.columnDefs);
         });
     }
 
     composecolumnDefs (columns: string[], rowItem: RowItem): Array<ColDef> {
-        console.log('COL', columns);
+        //console.log('COL', columns);
         const columnDefs: Array<ColDef> = [];
         columns.forEach( column => {
-            console.log('TITLE', rowItem[column].title);
+            if (rowItem[column] && rowItem[column].title ) {
+                //console.log('TITLE', rowItem[column].title);
+            }
             columnDefs.push(
                 {
                     headerName: rowItem[column] && rowItem[column].title ? rowItem[column].title : column,
@@ -77,7 +79,7 @@ export class GridComponent implements OnInit {
                 }
             );
         });
-        console.log('COLDEF', columnDefs);
+        //console.log('COLDEF', columnDefs);
         return columnDefs;
     }
 
