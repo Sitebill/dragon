@@ -5,10 +5,13 @@ import { Injectable } from '@angular/core';
 
 export class EndpointService {
 
+    firstRout = 'dragon/api/';
+    // 'http://food/dragon/api/'
+    // 'https://dragon.sitebill.site/dragon/api/';
+
     public get ( route: string ) {
-        return 'dragon/api/' + route;
-        //return 'http://food/dragon/api/' + route;
-        //return 'https://dragon.sitebill.site/dragon/api/' + route;
+        return this.firstRout + route;
+
     }
 
 }

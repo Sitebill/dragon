@@ -66,7 +66,6 @@ export class GridComponent implements OnInit {
                 //console.log('DEF', this.columnDefs);
 
         });
-        console.log('AG', this.agGrid);
     }
 
     composecolumnDefs (columns: string[], rowItem: RowItem): Array<ColDef> {

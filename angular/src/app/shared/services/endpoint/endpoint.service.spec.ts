@@ -11,8 +11,15 @@ describe('EndpointService', () => {
         expect(service).toBeTruthy();
     });
 
-   it('should return path', () => {
+    it('should service.get been called', () => {
+        spyOn(service, 'get');
+        service.get('route');
+        expect(service.get).toHaveBeenCalledWith('route');
+    });
+
+    it('should return path', () => {
         const path = service.get('route');
-        expect(path).toBe('dragon/api/route');
+        console.log(path);
+        expect(path).toBe(service.firstRout + 'route');
     });
 });

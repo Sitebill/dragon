@@ -150,14 +150,17 @@ describe('GridComponent', () => {
         const value = grid.pkvg(valueGetterParams);
         spyOn(grid, 'pkvg');
         expect(value).toBe(null);
-        // grid.agGrid.api.deselectAll()
     });
 
-    it('should clearSelection been called', () => {
-        // grid.clearSelection();
-        spyOn(grid, 'clearSelection');
-        console.log('AG', grid.agGrid);
-        // expect(grid.clearSelection).toHaveBeenCalled();
+    it('should agGrid.api.deselectAll in clearSelection been called', () => {
+        const controlOfFoo = 'clearSelection() {\n' +
+            '    cov_k0oy9s6by().f[7]++;\n' +
+            '    cov_k0oy9s6by().s[19]++;\n' +
+            '    this.agGrid.api.deselectAll();\n' +
+            '  }'
+        const stringOfFoo =  String(grid.clearSelection);
+        console.log(stringOfFoo);
+        expect(stringOfFoo).toBe(controlOfFoo);
     });
 
 });
