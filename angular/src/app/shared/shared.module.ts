@@ -12,6 +12,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {FuseMockApiModule} from "../lib/mock-api";
 import {mockApiServices} from "../tests/mock-api";
+import {InitFormService} from './form/init-service/init-form.service';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {mockApiServices} from "../tests/mock-api";
         ModalWrappersModule,
     ],
     providers: [
-        EntityService
+        EntityService,
+        InitFormService
     ],
 })
 export class SharedModule {

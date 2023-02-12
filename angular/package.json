@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test-coverage": "ng test --code-coverage",
-    "test-singl": "ng test --include src/app/shared/services/entity --code-coverage"
+    "test-singl": "ng test --include src/app/shared/form/init-service --code-coverage"
   },
   "private": true,
   "dependencies": {
