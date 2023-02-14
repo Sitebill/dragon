@@ -13,7 +13,7 @@ export class TestFormComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('test form');
+        // console.log('test form');
         this.clientEntity.table_name = 'client';
         this.clientEntity.app_name = 'client';
         this.clientEntity.primary_key = 'client_id';

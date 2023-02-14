@@ -69,7 +69,15 @@ describe('FormComponent', () => {
     it('should initForm been called', () => {
         component.ngOnInit();
         entityService.fetch_one(component.entity);
-        fixture.detectChanges();
-        expect(initFormService.initForm).toHaveBeenCalled();
+        // fixture.detectChanges();
+        expect(entityService.fetch_one).toHaveBeenCalledWith(component.entity);
+        expect(initFormService.initForm).toHaveBeenCalledWith(component);
     });
+
+    // it('should initForm been called', () => {
+    //     component.ngOnInit();
+    //     entityService.fetch_one(component.entity);
+    //     fixture.detectChanges();
+    //     expect(initFormService.initForm).toHaveBeenCalled();
+    // });
 });
