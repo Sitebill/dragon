@@ -24,8 +24,8 @@ export class InitFormService {
         // В цикле, есть есть совпадения с active_in_topic, тогда применяем правила ОБЯЗАТЕЛЬНОСТИ
         // При смене типа в форме, надо перезапускать процесс показа/валидации элементов
         let data = formComponent.entity;
-        console.log('ROWS', formComponent.rows);
-        console.log('RECORDS', formComponent.records);
+        // console.log('ROWS', formComponent.rows);
+        // console.log('RECORDS', formComponent.records);
 
         for (let i = 0; i < formComponent.rows.length; i++) {
             // console.log(i, 'TYPE', formComponent.records[formComponent.rows[i]].name,
@@ -33,7 +33,7 @@ export class InitFormService {
             //     formComponent.records[formComponent.rows[i]].active_in_topic_array,
             // );
             // const form_control_item = new FormControl(formComponent.records[formComponent.rows[i]].value);
-            console.log(i, ' ', formComponent.records[formComponent.rows[i]])
+            // console.log(i, ' ', formComponent.records[formComponent.rows[i]])
             this.formControlItem = new FormControl(formComponent.records[formComponent.rows[i]].value);
             // form_control_item.clearValidators();
             this.clear_Validators(this.formControlItem);

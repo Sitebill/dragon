@@ -4,7 +4,7 @@ import {EndpointService} from '../../services/endpoint/endpoint.service';
 import {HttpClient} from '@angular/common/http';
 import {MockHttpClient} from '../../../mocks/mock-http-client';
 import {EntityService} from '../../services/entity/entity.service';
-import {FormBuilder, FormControl} from '@angular/forms';
+import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {Entity} from '../../models/entity.model';
 import {MockItemModel} from '../../../mocks/mock-item.model';
 import {TestBed} from '@angular/core/testing';
@@ -102,15 +102,56 @@ describe('InitFormService', () => {
         expect(formComponent.parameters_storage[formComponent.records[formComponent.rows[1]].name]).toEqual(value);
     });
 
-    it('should clear_Validators to be called', () => {
+    it('should clear_Validators to be called with formControlItem', () => {
         spyOn(service, 'clear_Validators')
         service.initForm(formComponent);
-        expect(service.clear_Validators).toHaveBeenCalled();
+        expect(service.clear_Validators).toHaveBeenCalledWith(service.formControlItem);
     });
 
-    // if (formComponent.records[formComponent.rows[i]].type == 'parameter') {
-    //     formComponent.parameters_storage[formComponent.records[formComponent.rows[i]].name] =
-    //         formComponent.records[formComponent.rows[i]].value;
+    it('should set_Validators to be called with Validators.email', () => {
+        spyOn(service, 'set_Validators');
+        formComponent.records[formComponent.rows[4]].name = 'email';
+        service.initForm(formComponent);
+        expect(service.set_Validators).toHaveBeenCalledWith(service.formControlItem, Validators.email);
+    });
+
+    it('should init_select_box_options to be called with name', () => {
+        spyOn(formComponent, 'init_select_box_options');
+        formComponent.records[formComponent.rows[2]].type = 'select_box'
+        service.initForm(formComponent);
+        expect(formComponent.init_select_box_options).toHaveBeenCalledWith(formComponent.records[formComponent.rows[2]].name);
+    });
+
+    it('should init_geodata to be called with name', () => {
+        spyOn(formComponent, 'init_geodata');
+        formComponent.records[formComponent.rows[2]].type = 'geodata';
+        service.initForm(formComponent);
+        expect(formComponent.init_geodata).toHaveBeenCalledWith(formComponent.records[formComponent.rows[2]].name);
+    });
+
+    it('should init_photo_image to be called with name and value', () => {
+        spyOn(formComponent, 'init_photo_image');
+        formComponent.records[formComponent.rows[2]].type = 'photo';
+        service.initForm(formComponent);
+        expect(formComponent.init_photo_image).toHaveBeenCalledWith(formComponent.records[formComponent.rows[2]].name,
+            formComponent.records[formComponent.rows[2]].value);
+    });
+
+    it('should init_gallery_images to be called with name and value', () => {
+        spyOn(formComponent, 'init_gallery_images');
+        formComponent.records[formComponent.rows[2]].type = 'uploads';
+        service.initForm(formComponent);
+        expect(formComponent.init_gallery_images).toHaveBeenCalledWith(formComponent.records[formComponent.rows[2]].name,
+            formComponent.records[formComponent.rows[2]].value);
+    });
+
+    it('should hide_dadata to be called with rows', () => {
+        spyOn(formComponent, 'hide_dadata');
+        formComponent.records[formComponent.rows[2]].parameters = [null];
+        formComponent.records[formComponent.rows[2]].parameters.dadata = 1;
+        service.initForm(formComponent);
+        expect(formComponent.hide_dadata).toHaveBeenCalledWith(formComponent.rows[2]);
+    });
 
 
 });
