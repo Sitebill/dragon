@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
+import {FormControl, ValidatorFn, Validators} from '@angular/forms';
 import {forbiddenNullValue, FormComponent} from '../form.component';
 import * as moment from 'moment';
 
@@ -9,23 +9,36 @@ import * as moment from 'moment';
 
 export class InitFormService {
 
+    formControlItem: FormControl = new FormControl(null);
+
+    clear_Validators(item: FormControl):void {
+        item.clearValidators();
+    }
+
+    set_Validators(item: FormControl, arg: ValidatorFn | ValidatorFn[] | null): void {
+        item.setValidators(arg);
+    }
+
     initForm(formComponent: FormComponent): void {
         // Сначала нужно получить значение topic_id
         // В цикле, есть есть совпадения с active_in_topic, тогда применяем правила ОБЯЗАТЕЛЬНОСТИ
         // При смене типа в форме, надо перезапускать процесс показа/валидации элементов
         let data = formComponent.entity;
-        // console.log('DATA', data);
-        console.log('REC VAL-0', formComponent.rows[0]);
-        console.log('REC VAL-1', formComponent.records[formComponent.rows[1]]);
-        console.log('REC VAL-2', formComponent.records[formComponent.rows[2]]);
-        console.log('CONTR VAL-0', new FormControl(formComponent.records['client_id'].value).value);
-        console.log('CONTR VAL-1', new FormControl(formComponent.records[formComponent.rows[1]].value).status);
-        console.log('CONTR VAL-2', new FormControl(formComponent.records[formComponent.rows[2]].value));
+        console.log('ROWS', formComponent.rows);
+        console.log('RECORDS', formComponent.records);
 
         for (let i = 0; i < formComponent.rows.length; i++) {
-            // console.log(this.records[this.rows[i]].type);
-            const form_control_item = new FormControl(formComponent.records[formComponent.rows[i]].value);
-            form_control_item.clearValidators();
+            // console.log(i, 'TYPE', formComponent.records[formComponent.rows[i]].name,
+            //     formComponent.records[formComponent.rows[i]].active_in_topic,
+            //     formComponent.records[formComponent.rows[i]].active_in_topic_array,
+            // );
+            // const form_control_item = new FormControl(formComponent.records[formComponent.rows[i]].value);
+            console.log(i, ' ', formComponent.records[formComponent.rows[i]])
+            this.formControlItem = new FormControl(formComponent.records[formComponent.rows[i]].value);
+            // form_control_item.clearValidators();
+            this.clear_Validators(this.formControlItem);
+            // this.clear_Validators(form_control_item);
+            if (i === 1) formComponent.callMarker();
             formComponent.records[formComponent.rows[i]].required_boolean = false;
             if (data.get_hidden_column_edit(formComponent.rows[i])) {
                 formComponent.records[formComponent.rows[i]].hidden = true;
@@ -42,21 +55,21 @@ export class InitFormService {
 
             if (formComponent.records[formComponent.rows[i]].required == 'on') {
                 if (!formComponent.records[formComponent.rows[i]].hidden) {
-                    form_control_item.setValidators(forbiddenNullValue());
+                    // form_control_item.setValidators(forbiddenNullValue())
+                    this.set_Validators(this.formControlItem, forbiddenNullValue());
                     formComponent.records[formComponent.rows[i]].required_boolean = true;
                 }
             }
             if (formComponent.records[formComponent.rows[i]].name == 'email') {
-                form_control_item.setValidators(Validators.email);
+                this.set_Validators(this.formControlItem, Validators.email);
+                // form_control_item.setValidators(Validators.email);
             }
             /*
-
              console.log(this.rows[i]);
              console.log(form_control_item);
              console.log(i);
-
              */
-            formComponent.form.addControl(formComponent.rows[i], form_control_item);
+            formComponent.form.addControl(formComponent.rows[i], this.formControlItem);
 
             if (formComponent.is_date_type(formComponent.records[formComponent.rows[i]].type) &&
                 formComponent.records[formComponent.rows[i]].value == 'now') {
@@ -117,7 +130,6 @@ export class InitFormService {
                     formComponent.records[formComponent.rows[i]].value == '') {
                     formComponent.form.controls[formComponent.rows[i]].patchValue(null);
                 }
-
             }
 
 
@@ -158,13 +170,11 @@ export class InitFormService {
             }
         }
         /*
-
          console.log('records', this.records);
          console.log('controls', this.form.controls);
          console.log(this.tabs);
          console.log(this.tabs_keys);
          console.log('lets go');
-
          */
         formComponent.form_inited = true;
         formComponent.count_visible_items();
@@ -172,7 +182,6 @@ export class InitFormService {
          this.apply_topic_activity();
          this.after_form_inited();
          */
-
+        // console.log('REQ-BOOL-END', formComponent.records['client_id'].hidden);
     }
-
 }

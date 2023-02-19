@@ -91,7 +91,6 @@ export class FormComponent implements OnInit {
         this.text_area_editor_storage = {};
         this.form = this._formBuilder.group({});
         // console.log('FORM in constr', this.form );
-
     }
 
     ngOnInit(): void {
@@ -119,167 +118,19 @@ export class FormComponent implements OnInit {
 
                 // console.log('REC', this.records);
                 this.initFormService.initForm(this);
-
+                // this.init_form()
 /*
                         this._data.model = this.records;
                         // console.log(this.records);
 
                         this.rows = Object.keys(result.data);
-
 */
-
             });
-
     }
 
-//     init_form() {
-//
-//         // Сначала нужно получить значение topic_id
-//         // В цикле, есть есть совпадения с active_in_topic, тогда применяем правила ОБЯЗАТЕЛЬНОСТИ
-//         // При смене типа в форме, надо перезапускать процесс показа/валидации элементов
-//         let data = this.entity;
-//
-//
-//         for (let i = 0; i < this.rows.length; i++) {
-//             // console.log(this.records[this.rows[i]].type);
-//             const form_control_item = new FormControl(this.records[this.rows[i]].value);
-//             form_control_item.clearValidators();
-//             this.records[this.rows[i]].required_boolean = false;
-//             if (data.get_hidden_column_edit(this.rows[i])) {
-//                 this.records[this.rows[i]].hidden = true;
-//             } else {
-//                 this.records[this.rows[i]].hidden = false;
-//             }
-//             if (this.records[this.rows[i]].active_in_topic != '0' && this.records[this.rows[i]].active_in_topic != null) {
-//                 this.records[this.rows[i]].active_in_topic_array = this.records[this.rows[i]].active_in_topic.split(',');
-//             } else {
-//                 this.records[this.rows[i]].active_in_topic_array = null;
-//             }
-//
-//             if (this.records[this.rows[i]].required == 'on') {
-//                 if (!this.records[this.rows[i]].hidden) {
-//                     form_control_item.setValidators(forbiddenNullValue());
-//                     this.records[this.rows[i]].required_boolean = true;
-//                 }
-//             }
-//             if (this.records[this.rows[i]].name == 'email') {
-//                 form_control_item.setValidators(Validators.email);
-//             }
-// /*
-//
-//             console.log(this.rows[i]);
-//             console.log(form_control_item);
-//             console.log(i);
-//
-// */
-//             this.form.addControl(this.rows[i], form_control_item);
-//
-//             if (this.is_date_type(this.records[this.rows[i]].type) && this.records[this.rows[i]].value == 'now') {
-//                 this.form.controls[this.rows[i]].patchValue(moment());
-//             }
-//
-//             if (this.records[this.rows[i]].type == 'textarea_editor') {
-//                 this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
-//             }
-//
-//             if (this.records[this.rows[i]].type == 'parameter') {
-//                 this.parameters_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
-//             }
-//
-//             if (
-//                 this.records[this.rows[i]].type == 'select_by_query' ||
-//                 this.records[this.rows[i]].type == 'select_by_query_multiple' ||
-//                 this.records[this.rows[i]].type == 'select_by_query_multi'
-//             ) {
-//                 this.init_select_by_query_options(this.records[this.rows[i]].name, i);
-//                 if (this.records[this.rows[i]].value == 0) {
-//                     this.form.controls[this.rows[i]].patchValue(null);
-//                 }
-//             }
-//             if (
-//                 this.records[this.rows[i]].type == 'select_box_structure' ||
-//                 this.records[this.rows[i]].type == 'select_box_structure_simple_multiple' ||
-//                 this.records[this.rows[i]].type == 'select_box_structure_multiple_checkbox'
-//             ) {
-//                 this.init_select_by_query_options(this.records[this.rows[i]].name, i);
-//                 if (this.records[this.rows[i]].value == 0) {
-//                     this.form.controls[this.rows[i]].patchValue(null);
-//                 }
-//             }
-//
-//             if (this.records[this.rows[i]].type == 'date') {
-//                 // this.form.controls[this.rows[i]].patchValue();
-//                 // console.log(this.records[this.rows[i]]);
-//                 if (this.records[this.rows[i]].value_string != '' && this.records[this.rows[i]].value_string != null) {
-//                     this.form.controls[this.rows[i]].patchValue(moment(this.records[this.rows[i]].value_string, 'DD.MM.YYYY'));
-//                 } else {
-//                     this.form.controls[this.rows[i]].patchValue(null);
-//                 }
-//             }
-//
-//             if (this.records[this.rows[i]].type == 'dttime') {
-//                 this.form.controls[this.rows[i]].patchValue(this.records[this.rows[i]].value.slice(10, 16));
-//             }
-//
-//             if (this.records[this.rows[i]].type == 'select_box') {
-//                 this.init_select_box_options(this.records[this.rows[i]].name);
-//                 if (this.records[this.rows[i]].value_string == '' && this.records[this.rows[i]].value == '') {
-//                     this.form.controls[this.rows[i]].patchValue(null);
-//                 }
-//
-//             }
-//
-//
-//             if (this.records[this.rows[i]].type == 'checkbox') {
-//                 if (this.records[this.rows[i]].value != 1) {
-//                     this.form.controls[this.rows[i]].patchValue(false);
-//                 }
-//             }
-//
-//             if (this.records[this.rows[i]].type == 'geodata') {
-//                 this.init_geodata(this.records[this.rows[i]].name);
-//             }
-//
-//             if (this.records[this.rows[i]].type == 'photo') {
-//                 this.init_photo_image(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
-//             }
-//
-//
-//             if (this.records[this.rows[i]].type == 'uploads') {
-//                 this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
-//             }
-//
-//             if (this.records[this.rows[i]].parameters != null) {
-//                 if (this.records[this.rows[i]].parameters.dadata == 1) {
-//                     this.hide_dadata(this.rows[i]);
-//                 }
-//
-//             }
-//             if (data.is_hidden(this.rows[i])) {
-//                 this.hide_row(this.rows[i]);
-//             }
-//             if (data.get_default_value(this.rows[i])) {
-//                 this.records[this.rows[i]].value = data.get_default_value(this.rows[i]);
-//                 this.form.controls[this.rows[i]].patchValue(this.records[this.rows[i]].value);
-//             }
-//         }
-// /*
-//
-//         console.log('records', this.records);
-//         console.log('controls', this.form.controls);
-//         console.log(this.tabs);
-//         console.log(this.tabs_keys);
-//         console.log('lets go');
-//
-// */
-//         this.form_inited = true;
-//         this.count_visible_items();
-//         /*
-//         this.apply_topic_activity();
-//         this.after_form_inited();
-//          */
-//
-//     }
+    callMarker(): void {
+        console.log('CALL_MARKER');
+    }
 
     hide_dadata(row: string) {
         this.hide_row(row);
@@ -324,15 +175,12 @@ export class FormComponent implements OnInit {
         }
         // console.log(this.galleryImages[field_name]);
 */
-
     }
 
 
     init_photo_image(field_name: string, image: string) {
         //@todo: реализовать!
-
 /*
-
         this.galleryImages[field_name] = [];
         const self = this;
         if (image != '') {
@@ -345,16 +193,13 @@ export class FormComponent implements OnInit {
         } else {
             this.galleryImages[field_name] = [];
         }
-
 */
     }
 
 
     init_geodata(columnName: string) {
         //@todo: реализовать!
-
 /*
-
         try {
             // console.log(parseFloat(this.records[columnName].value.lat));
             if (parseFloat(this.records[columnName].value.lat)) {
@@ -371,13 +216,11 @@ export class FormComponent implements OnInit {
             }
         } catch {
         }
-
 */
     }
 
     init_select_box_options(columnName: string) {
         //@todo: реализовать!
-
 /*
 
         if ( this.records[columnName].api ) {
@@ -396,16 +239,13 @@ export class FormComponent implements OnInit {
             } catch {
             }
         }
-
 */
     }
 
 
     init_select_by_query_options(columnName: string, rowIndex = 0) {
         //@todo: реализовать!
-
 /*
-
         // console.log(this._data.get_default_params());
         this.termsearch = false;
         this.modelService.load_dictionary_model_with_params(this._data.get_table_name(), columnName, this.get_ql_items_from_form(), true)
@@ -432,7 +272,6 @@ export class FormComponent implements OnInit {
                     }
                 }
             });
-
 */
     }
 
@@ -466,10 +305,8 @@ export class FormComponent implements OnInit {
     setNumberOfColumns(n: number): void {
         //@todo: реализовать!
 /*
-
         this.numberOfColumns = n;
         this.storageService.setItem('numberOfColumns', String(n));
-
 */
     }
 

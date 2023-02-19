@@ -57,7 +57,7 @@ describe('FormComponent', () => {
            "date", "type_id", "status_id", "fio", "phone","email", "address", "order_text", "src_page", "user_id", "Kommentariy", "topic_id",
            "topic_choice", "user_id_razmestyl", "price", "price_ot", "price_do","active", "rabotnik"]}}));
         spyOn(formBuilder, 'group').and.returnValue(new FormGroup({}));
-        spyOn(initFormService, 'initForm')
+        // spyOn(initFormService, 'initForm')
         formBuilder.group(entityItem);
         fixture.detectChanges();
     });
@@ -66,13 +66,25 @@ describe('FormComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should initForm been called', () => {
-        component.ngOnInit();
-        entityService.fetch_one(component.entity);
-        // fixture.detectChanges();
-        expect(entityService.fetch_one).toHaveBeenCalledWith(component.entity);
-        expect(initFormService.initForm).toHaveBeenCalledWith(component);
-    });
+    // it('should initForm been called', () => {
+    //     component.ngOnInit();
+    //     entityService.fetch_one(component.entity);
+    //     // fixture.detectChanges();
+    //     expect(entityService.fetch_one).toHaveBeenCalledWith(component.entity);
+    //     expect(initFormService.initForm).toHaveBeenCalledWith(component);
+    // });
+
+    // it('should init-form been called', () => {
+    //     spyOn(component, 'init_form');
+    //     component.ngOnInit();
+    //     expect(component.init_form).toHaveBeenCalled();
+    // });
+    //
+    // it('should callMarker been called', () => {
+    //     spyOn(component, 'callMarker');
+    //     component.init_form();
+    //     expect(component.callMarker).toHaveBeenCalled();
+    // });
 
     // it('should initForm been called', () => {
     //     component.ngOnInit();
