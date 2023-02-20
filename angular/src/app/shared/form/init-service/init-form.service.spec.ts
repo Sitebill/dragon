@@ -78,7 +78,6 @@ describe('InitFormService', () => {
     it('should active_in_topic_array to be array', () => {
         formComponent.records['client_id'].active_in_topic = 'test,done';
         service.initForm(formComponent);
-        console.log('AR in TEST', formComponent.records['client_id'].active_in_topic_array)
         expect(formComponent.records['client_id'].active_in_topic_array.length).toBe(2);
     });
 
@@ -153,5 +152,41 @@ describe('InitFormService', () => {
         expect(formComponent.hide_dadata).toHaveBeenCalledWith(formComponent.rows[2]);
     });
 
+    it('should init_select_by_query_options to be called with name and index', () => {
+        spyOn(formComponent, 'init_select_by_query_options');
+        formComponent.records[formComponent.rows[2]].type = 'select_by_query';
+        service.initForm(formComponent);
+        expect(formComponent.init_select_by_query_options)
+            .toHaveBeenCalledWith(formComponent.records[formComponent.rows[2]].name, 2);
+        formComponent.records[formComponent.rows[2]].type = 'select_by_query_multiple';
+        service.initForm(formComponent);
+        expect(formComponent.init_select_by_query_options)
+            .toHaveBeenCalledWith(formComponent.records[formComponent.rows[2]].name, 2);
+        formComponent.records[formComponent.rows[2]].type = 'select_by_query_multi';
+        service.initForm(formComponent);
+        expect(formComponent.init_select_by_query_options)
+            .toHaveBeenCalledWith(formComponent.records[formComponent.rows[2]].name, 2);
+        formComponent.records[formComponent.rows[2]].type = 'select_box_structure';
+        service.initForm(formComponent);
+        expect(formComponent.init_select_by_query_options)
+            .toHaveBeenCalledWith(formComponent.records[formComponent.rows[2]].name, 2);
+        formComponent.records[formComponent.rows[2]].type = 'select_box_structure_simple_multiple';
+        service.initForm(formComponent);
+        expect(formComponent.init_select_by_query_options)
+            .toHaveBeenCalledWith(formComponent.records[formComponent.rows[2]].name, 2);
+        formComponent.records[formComponent.rows[2]].type = 'select_box_structure_multiple_checkbox';
+        service.initForm(formComponent);
+        expect(formComponent.init_select_by_query_options)
+            .toHaveBeenCalledWith(formComponent.records[formComponent.rows[2]].name, 2);
+    });
 
+    it('should hide_row to be called with index', () => {
+        spyOn(formComponent, 'hide_row');
+        formComponent.entity.set_hidden(formComponent.rows[2]);
+        service.initForm(formComponent);
+        expect(formComponent.hide_row).toHaveBeenCalledWith(formComponent.rows[2]);
+    });
+
+    // if (data.is_hidden(formComponent.rows[i])) {
+    //     formComponent.hide_row(formComponent.rows[i]);
 });

@@ -128,10 +128,6 @@ export class FormComponent implements OnInit {
             });
     }
 
-    callMarker(): void {
-        console.log('CALL_MARKER');
-    }
-
     hide_dadata(row: string) {
         this.hide_row(row);
     }

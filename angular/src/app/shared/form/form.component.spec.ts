@@ -1,5 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormComponent} from './form.component';
+import {forbiddenNullValue} from './form.component';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {EntityService} from "../services/entity/entity.service";
 import {
@@ -21,6 +22,7 @@ import {Entity} from '../models/entity.model';
 
 describe('FormComponent', () => {
     let component: FormComponent;
+    let forbiddenNullValueFunction: ValidatorFn;
     let fixture: ComponentFixture<FormComponent>;
     let entityService: EntityService;
     let initFormService: InitFormService;
@@ -40,6 +42,7 @@ describe('FormComponent', () => {
             providers: [
                 {provide: EntityService, useClass: MockEntityService},
                 {provide: FormBuilder, useClass: FormBuilder },
+                {provide: forbiddenNullValue},
             ]
         })
             .compileComponents();
@@ -49,6 +52,7 @@ describe('FormComponent', () => {
         entityService = TestBed.inject(EntityService);
         initFormService = TestBed.inject(InitFormService);
         formBuilder = TestBed.inject(FormBuilder);
+        forbiddenNullValueFunction = TestBed.inject(forbiddenNullValue);
         mockRowItem = new MockItemModel();
         entity = new Entity();
         component.entity = entity;
@@ -65,6 +69,24 @@ describe('FormComponent', () => {
     it('should create', () => {
         expect(component).toBeTruthy();
     });
+
+    it('should forbiddenNullValue return result', () => {
+        let control: AbstractControl = new FormControl()
+        const controlValue = forbiddenNullValueFunction(control);
+        const result = {forbiddenNullValue: {value: null}};
+        expect(controlValue).toEqual(result);
+    });
+
+    it('should forbiddenNullValue return null', () => {
+        let control: AbstractControl = new FormControl({});
+        const controlValue = forbiddenNullValueFunction(control);
+        expect(controlValue).toEqual(null);
+    });
+
+    // forbiddenNullValue(): ValidatorFn {
+    //     return (control: AbstractControl): { [key: string]: any } | null => {
+    //         return control.value == null || control.value == 0 ? {forbiddenNullValue: {value: control.value}} : null;
+    //     };
 
     // it('should initForm been called', () => {
     //     component.ngOnInit();

@@ -38,7 +38,6 @@ export class InitFormService {
             // form_control_item.clearValidators();
             this.clear_Validators(this.formControlItem);
             // this.clear_Validators(form_control_item);
-            if (i === 1) formComponent.callMarker();
             formComponent.records[formComponent.rows[i]].required_boolean = false;
             if (data.get_hidden_column_edit(formComponent.rows[i])) {
                 formComponent.records[formComponent.rows[i]].hidden = true;
