@@ -9,7 +9,6 @@
     "test": "ng test",
     "test-coverage": "ng test --code-coverage",
     "test-form": "ng test --include src/app/shared/form --code-coverage",
-    "test-init-service": "ng test --include src/app/shared/form/init-service --code-coverage",
     "test-entity-service": "ng test --include src/app/shared/services/entity --code-coverage",
     "test-endpoint-service": "ng test --include src/app/shared/services/endpoint --code-coverage"
   },

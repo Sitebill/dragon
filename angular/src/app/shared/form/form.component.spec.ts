@@ -13,23 +13,26 @@ import {
     Validators
 } from "@angular/forms";
 import {MockEntityService} from '../../mocks/mock-entity.service';
-import {InitFormService} from './init-service/init-form.service';
 import {of} from 'rxjs';
 import {EntityItem} from '../models/entity-item.model';
 import {MockItemModel} from '../../mocks/mock-item.model';
 import {RouterTestingModule} from '@angular/router/testing';
 import {Entity} from '../models/entity.model';
+import {PRE_INIT_RECORDS} from "../../mocks/pre-int-records";
+import {POST_INIT_RECORDS} from "../../mocks/post-int-records";
+import {RowItem} from "../models/responses/grid-response.model";
 
 describe('FormComponent', () => {
     let component: FormComponent;
     let forbiddenNullValueFunction: ValidatorFn;
     let fixture: ComponentFixture<FormComponent>;
     let entityService: EntityService;
-    let initFormService: InitFormService;
     let formBuilder: FormBuilder;
     let entity: Entity;
     let entityItem: EntityItem;
     let mockRowItem: any;
+    let preInitRecords: any;
+    let postInitRecords: any;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -41,7 +44,7 @@ describe('FormComponent', () => {
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             providers: [
                 {provide: EntityService, useClass: MockEntityService},
-                {provide: FormBuilder, useClass: FormBuilder },
+                {provide: FormBuilder, useClass: FormBuilder},
                 {provide: forbiddenNullValue},
             ]
         })
@@ -50,20 +53,33 @@ describe('FormComponent', () => {
         fixture = TestBed.createComponent(FormComponent);
         component = fixture.componentInstance;
         entityService = TestBed.inject(EntityService);
-        initFormService = TestBed.inject(InitFormService);
         formBuilder = TestBed.inject(FormBuilder);
         forbiddenNullValueFunction = TestBed.inject(forbiddenNullValue);
         mockRowItem = new MockItemModel();
         entity = new Entity();
         component.entity = entity;
+        preInitRecords = PRE_INIT_RECORDS;
+        postInitRecords = POST_INIT_RECORDS as unknown as RowItem;
+        for (const [key_obj, value_obj] of Object.entries(postInitRecords)) {
+            postInitRecords[key_obj] = new EntityItem(value_obj);
+        }
+        postInitRecords['order_text'].active_in_topic_array = ['test', 'done'];
+        postInitRecords['src_page'].required_boolean = true;
+        postInitRecords['test-record-6'].hidden = true;
         entityItem = new EntityItem(mockRowItem);
-        spyOn(entityService, 'fetch_one').and.returnValue(of({item: entityItem, success: true, tabs: {основное: ["client_id",
-           "date", "type_id", "status_id", "fio", "phone","email", "address", "order_text", "src_page", "user_id", "Kommentariy", "topic_id",
-           "topic_choice", "user_id_razmestyl", "price", "price_ot", "price_do","active", "rabotnik"]}}));
+        spyOn(entityService, 'fetch_one').and.returnValue(of({
+            item: preInitRecords, success: true, tabs: {
+                основное:
+                    ["client_id", "date", "type_id", "status_id", "fio", "phone", "email", "address", "order_text", "src_page",
+                    "user_id", "Kommentariy", "topic_id", "topic_choice", "user_id_razmestyl", "price", "price_ot", "price_do",
+                    "active", "rabotnik"]
+            }
+        }));
         spyOn(formBuilder, 'group').and.returnValue(new FormGroup({}));
-        // spyOn(initFormService, 'initForm')
         formBuilder.group(entityItem);
         fixture.detectChanges();
+
+        // component.records["client_id"].required = 'on';
     });
 
     it('should create', () => {
@@ -83,35 +99,20 @@ describe('FormComponent', () => {
         expect(controlValue).toEqual(null);
     });
 
-    // forbiddenNullValue(): ValidatorFn {
-    //     return (control: AbstractControl): { [key: string]: any } | null => {
-    //         return control.value == null || control.value == 0 ? {forbiddenNullValue: {value: control.value}} : null;
-    //     };
+    it('should initForm been called', () => {
+        spyOn(component, 'init_form');
+        component.ngOnInit();
+        entityService.fetch_one(component.entity);
+        expect(entityService.fetch_one).toHaveBeenCalledWith(component.entity);
+        expect(component.init_form).toHaveBeenCalled();
+    });
 
-    // it('should initForm been called', () => {
-    //     component.ngOnInit();
-    //     entityService.fetch_one(component.entity);
-    //     // fixture.detectChanges();
-    //     expect(entityService.fetch_one).toHaveBeenCalledWith(component.entity);
-    //     expect(initFormService.initForm).toHaveBeenCalledWith(component);
-    // });
+    it('should recors to equal postInitRecors', () => {
+        component.init_form();
+        // console.log(component.records['order_text'].active_in_topic_array);
+        // console.log('POST', postInitRecords['order_text'].active_in_topic_array);
+        expect(component.records).toEqual(postInitRecords);
+    });
 
-    // it('should init-form been called', () => {
-    //     spyOn(component, 'init_form');
-    //     component.ngOnInit();
-    //     expect(component.init_form).toHaveBeenCalled();
-    // });
-    //
-    // it('should callMarker been called', () => {
-    //     spyOn(component, 'callMarker');
-    //     component.init_form();
-    //     expect(component.callMarker).toHaveBeenCalled();
-    // });
 
-    // it('should initForm been called', () => {
-    //     component.ngOnInit();
-    //     entityService.fetch_one(component.entity);
-    //     fixture.detectChanges();
-    //     expect(initFormService.initForm).toHaveBeenCalled();
-    // });
 });

@@ -16,7 +16,6 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatDialogModule} from "@angular/material/dialog";
-import {InitFormService} from './init-service/init-form.service';
 
 
 @NgModule({
@@ -44,9 +43,6 @@ import {InitFormService} from './init-service/init-form.service';
         MatInputModule,
         MatButtonModule,
         MatDialogModule,
-    ],
-    providers: [
-        InitFormService
     ],
 })
 export class FormModule {

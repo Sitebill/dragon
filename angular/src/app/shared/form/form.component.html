@@ -24,59 +24,69 @@
                 <ng-container *ngIf="entity.get_key_value()">Редактировать запись</ng-container>
                 <ng-container *ngIf="!entity.get_key_value()">Создать запись</ng-container>
             </span>
-                <span class="title dialog-title" *ngIf="entity.get_title() !== null">Создание записи {{entity.get_title()}}</span>
+                <span class="title dialog-title"
+                      *ngIf="entity.get_title() !== null">Создание записи {{entity.get_title()}}</span>
                 <button mat-icon-button (click)="close()" aria-label="Закрыть">
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-toolbar-row>
         </mat-toolbar>
-        <form  [formGroup]="form" (ngSubmit)="save()">
+        <form [formGroup]="form" (ngSubmit)="save()">
 
             <ng-container *ngIf="!disable_mat_dialog_content_tag">
-                <ng-container *ngTemplateOutlet="inner_form_mat_dialog_content_selector; context: {rows:rows, tabs_keys:tabs_keys, form_inited:form_inited, form:form}">
+                <ng-container
+                    *ngTemplateOutlet="inner_form_mat_dialog_content_selector; context: {rows:rows, tabs_keys:tabs_keys, form_inited:form_inited, form:form}">
                 </ng-container>
             </ng-container>
 
             <ng-container *ngIf="disable_mat_dialog_content_tag">
-                <ng-container *ngTemplateOutlet="inner_form_empty_selector; context: {rows:rows, tabs_keys:tabs_keys, form_inited:form_inited, form:form}">
+                <ng-container
+                    *ngTemplateOutlet="inner_form_empty_selector; context: {rows:rows, tabs_keys:tabs_keys, form_inited:form_inited, form:form}">
                 </ng-container>
             </ng-container>
 
             <div mat-dialog-actions class="m-0 p-8" fxLayout="row" fxLayoutAlign="space-between center">
                 <div>
-                    <button *ngIf="!disable_save_button" mat-raised-button type="submit" color="accent"  aria-label="Сохранить изменения" matTooltip="Сохранить изменения">
+                    <button *ngIf="!disable_save_button" mat-raised-button type="submit" color="accent"
+                            aria-label="Сохранить изменения" matTooltip="Сохранить изменения">
                         Сохранить
                     </button>
-                    <button *ngIf="!disable_cancel_button" mat-raised-button type="button" (click)="close()" aria-label="Не сохранять и закрыть форму" matTooltip="Не сохранять и закрыть форму">
+                    <button *ngIf="!disable_cancel_button" mat-raised-button type="button" (click)="close()"
+                            aria-label="Не сохранять и закрыть форму" matTooltip="Не сохранять и закрыть форму">
                         Отмена
                     </button>
 
                 </div>
-                <button *ngIf="entity.key_value != null && !disable_delete" mat-icon-button (click)="delete()" type="button" aria-label="Удалить запись" matTooltip="Удалить запись">
+                <button *ngIf="entity.key_value != null && !disable_delete" mat-icon-button (click)="delete()"
+                        type="button" aria-label="Удалить запись" matTooltip="Удалить запись">
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
         </form>
     </div>
-<!--
+    <!--
 
-    <div class="modal-content__comments" *ngIf="entity.is_enable_comment() && this.modelService.get_access('comment', 'access')">
-        <comments-apps [entity]="_data" (onToggle)="onCommentToggle($event)"></comments-apps>
-    </div>
+        <div class="modal-content__comments" *ngIf="entity.is_enable_comment() && this.modelService.get_access('comment', 'access')">
+            <comments-apps [entity]="_data" (onToggle)="onCommentToggle($event)"></comments-apps>
+        </div>
 
--->
+    -->
 </ng-container>
 
-<ng-template #inner_form_mat_dialog_content_selector let-rows="rows" let-tabs_keys="tabs_keys" let-form_inited="form_inited" let-form="form">
+<ng-template #inner_form_mat_dialog_content_selector let-rows="rows" let-tabs_keys="tabs_keys"
+             let-form_inited="form_inited" let-form="form">
     <div mat-dialog-content class="{{getCommentHeightFix()}} mat-dialog-content-fixed-width p-12 m-0">
-        <ng-container *ngTemplateOutlet="inner_form; context: {rows:rows, tabs_keys:tabs_keys, form_inited:form_inited, form:form}">
+        <ng-container
+            *ngTemplateOutlet="inner_form; context: {rows:rows, tabs_keys:tabs_keys, form_inited:form_inited, form:form}">
         </ng-container>
     </div>
 </ng-template>
 
-<ng-template #inner_form_empty_selector let-rows="rows" let-tabs_keys="tabs_keys" let-form_inited="form_inited" let-form="form">
+<ng-template #inner_form_empty_selector let-rows="rows" let-tabs_keys="tabs_keys" let-form_inited="form_inited"
+             let-form="form">
     <div class="{{getCommentHeightFix()}} mat-dialog-content-fixed-width p-12 m-0">
-        <ng-container *ngTemplateOutlet="inner_form; context: {rows:rows, tabs_keys:tabs_keys, form_inited:form_inited, form:form}">
+        <ng-container
+            *ngTemplateOutlet="inner_form; context: {rows:rows, tabs_keys:tabs_keys, form_inited:form_inited, form:form}">
         </ng-container>
     </div>
 </ng-template>
@@ -104,62 +114,63 @@
 </ng-template>
 
 <ng-template #tab_item let-tab="tab" let-form="form">
-    <div [formGroup]="form" fxLayout="column" fxLayoutAlign="start start"  class="flex_wrap" *ngIf="tabs">
+    <div [formGroup]="form" fxLayout="column" fxLayoutAlign="start start" class="flex_wrap" *ngIf="tabs">
 
-<!--
-        <form class="row g-3">
-            <div class="col-md-6">
-                <label for="inputEmail4" class="form-label">Email</label>
-                <input type="email" class="form-control" id="inputEmail4">
-            </div>
-            <div class="col-md-6">
-                <label for="inputPassword4" class="form-label">Password</label>
-                <input type="password" class="form-control" id="inputPassword4">
-            </div>
-            <div class="col-12">
-                <label for="inputAddress" class="form-label">Address</label>
-                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-            </div>
-            <div class="col-12">
-                <label for="inputAddress2" class="form-label">Address 2</label>
-                <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-            </div>
-            <div class="col-md-6">
-                <label for="inputCity" class="form-label">City</label>
-                <input type="text" class="form-control" id="inputCity">
-            </div>
-            <div class="col-md-4">
-                <label for="inputState" class="form-label">State</label>
-                <select id="inputState" class="form-select">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <label for="inputZip" class="form-label">Zip</label>
-                <input type="text" class="form-control" id="inputZip">
-            </div>
-            <div class="col-12">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck">
-                    <label class="form-check-label" for="gridCheck">
-                        Check me out
-                    </label>
-                </div>
-            </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">Sign in</button>
-            </div>
-        </form>
--->
+        <!--
+                <form class="row g-3">
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="inputEmail4">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="inputPassword4">
+                    </div>
+                    <div class="col-12">
+                        <label for="inputAddress" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                    </div>
+                    <div class="col-12">
+                        <label for="inputAddress2" class="form-label">Address 2</label>
+                        <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputCity" class="form-label">City</label>
+                        <input type="text" class="form-control" id="inputCity">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputState" class="form-label">State</label>
+                        <select id="inputState" class="form-select">
+                            <option selected>Choose...</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputZip" class="form-label">Zip</label>
+                        <input type="text" class="form-control" id="inputZip">
+                    </div>
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gridCheck">
+                            <label class="form-check-label" for="gridCheck">
+                                Check me out
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Sign in</button>
+                    </div>
+                </form>
+        -->
 
         <div class="row g-3">
-        <ng-container *ngFor="let x of tabs[tab]">
+            <ng-container *ngFor="let x of tabs[tab]">
                 <div class="col-md-6" *ngIf="x && records[x] && records[x].name">
                     <label for="{{records[x].name}}" class="form-label">{{records[x].title}}</label>
-                    <input type="text" class="form-control" [formControlName]="records[x].name" id="{{records[x].name}}">
+                    <input type="text" class="form-control" [formControlName]="records[x].name"
+                           id="{{records[x].name}}">
                 </div>
-        </ng-container>
+            </ng-container>
         </div>
 
         <ng-container *ngIf="false">
@@ -178,33 +189,41 @@
 
                 <span *ngIf="records[x]" [ngSwitch]="records[x].type">
 
-                    <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
+                    <input *ngSwitchCase="'hidden'" [hidden]="true" readonly matInput
+                           [formControlName]="records[x].name" placeholder="{{records[x].title}}">
 
 
-                    <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'primary_key'" [hidden]="records[x].hidden">
+                    <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'primary_key'"
+                                    [hidden]="records[x].hidden">
                         <mat-label [innerHTML]="records[x].title"></mat-label>
-                        <input class="disabled-text" readonly matInput [formControlName]="records[x].name" placeholder="{{records[x].title}}">
+                        <input class="disabled-text" readonly matInput [formControlName]="records[x].name"
+                               placeholder="{{records[x].title}}">
                     </mat-form-field>
 
                     <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'date'" [hidden]="records[x].hidden">
                         <mat-label [innerHTML]="records[x].title"></mat-label>
-                        <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
+                        <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean"
+                               (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                         <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                         <mat-datepicker #dp
                                         panelClass="example-month-picker">
                         </mat-datepicker>
                     </mat-form-field>
 
-                    <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'dttime'" [hidden]="records[x].hidden">
+                    <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'dttime'"
+                                    [hidden]="records[x].hidden">
                         <mat-label [innerHTML]="records[x].title"></mat-label>
-                        <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" [ngxTimepicker]="picker" [format]="24" placeholder="{{records[x].title}}">
+                        <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean"
+                               [ngxTimepicker]="picker" [format]="24" placeholder="{{records[x].title}}">
                         <mat-icon matSuffix>access_time</mat-icon>
                         <ngx-material-timepicker #picker></ngx-material-timepicker>
                     </mat-form-field>
 
-                    <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'dtdatetime'" [hidden]="records[x].hidden">
+                    <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'dtdatetime'"
+                                    [hidden]="records[x].hidden">
                         <mat-label [innerHTML]="records[x].title"></mat-label>
-                        <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
+                        <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean"
+                               (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                         <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                         <mat-datepicker #dp
                                         panelClass="example-month-picker">
@@ -221,9 +240,11 @@
                         </ng-container>
                     </mat-form-field>
 
-                    <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'dtdate'" [hidden]="records[x].hidden">
+                    <mat-form-field [appearance]="get_appearance()" *ngSwitchCase="'dtdate'"
+                                    [hidden]="records[x].hidden">
                         <mat-label [innerHTML]="records[x].title"></mat-label>
-                        <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
+                        <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean"
+                               (click)="dp.open()" [matDatepicker]="dp" placeholder="{{records[x].title}}">
                         <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                         <mat-datepicker #dp
                                         panelClass="example-month-picker">
@@ -256,7 +277,9 @@
                     -->
 
 
-                    <span *ngSwitchCase="records[x].type === 'select_box_structure' || records[x].type === 'select_box_structure_simple_multiple'  || records[x].type === 'select_box_structure_multiple_checkbox'? records[x].type : ''" [hidden]="records[x].hidden">
+                    <span
+                        *ngSwitchCase="records[x].type === 'select_box_structure' || records[x].type === 'select_box_structure_simple_multiple'  || records[x].type === 'select_box_structure_multiple_checkbox'? records[x].type : ''"
+                        [hidden]="records[x].hidden">
                         <ng-select [formControlName]="records[x].name"
                                    [required]="records[x].required_boolean"
                                    appendTo="body"
@@ -281,7 +304,9 @@
                                 </span>
                             </ng-template>
                         </ng-select>
-                        <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+                        <mat-error
+                            *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}}
+                            обязательное поле!</mat-error>
                         <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                     </span>
 
@@ -322,7 +347,9 @@
                                         </span>
                                     </ng-template>
                                 </ng-select>
-                                <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+                                <mat-error
+                                    *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}}
+                                    обязательное поле!</mat-error>
                                 <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                             </div>
 
@@ -362,7 +389,9 @@
                             </ng-template>
                         </ng-select>
 
-                        <mat-error *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}} обязательное поле!</mat-error>
+                        <mat-error
+                            *ngIf="form.controls[records[x].name].status == 'INVALID' && form_submitted">{{records[x].title}}
+                            обязательное поле!</mat-error>
                         <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                     </span>
 
@@ -403,10 +432,14 @@
 
                             <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                                 <mat-form-field fxFlex="50" class="pr-4">
-                                    <input matInput [(ngModel)]="lat" placeholder="lat" [ngModelOptions]="{standalone: true}" [required]="records[x].required_boolean">
+                                    <input matInput [(ngModel)]="lat" placeholder="lat"
+                                           [ngModelOptions]="{standalone: true}"
+                                           [required]="records[x].required_boolean">
                                 </mat-form-field>
                                 <mat-form-field fxFlex="50" class="pl-4">
-                                    <input matInput [(ngModel)]="lng" placeholder="lng" [ngModelOptions]="{standalone: true}" [required]="records[x].required_boolean">
+                                    <input matInput [(ngModel)]="lng" placeholder="lng"
+                                           [ngModelOptions]="{standalone: true}"
+                                           [required]="records[x].required_boolean">
                                 </mat-form-field>
                             </div>
                             <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
@@ -433,7 +466,8 @@
 
                                     <input [formControlName]="records[x].name" matInput [hidden]="true">
                                     <mat-error>{{records[x].title}} обязательное поле!</mat-error>
-                                    <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
+                                    <mat-hint align="end" *ngIf="records[x].hint"
+                                              [innerHTML]="records[x].hint"></mat-hint>
                                 </mat-form-field>
 
                             </div>
@@ -444,16 +478,20 @@
 
                     </span>
 
-                    <mat-form-field [appearance]="get_appearance()" [hidden]="records[x].hidden" *ngSwitchCase="'textarea'">
+                    <mat-form-field [appearance]="get_appearance()" [hidden]="records[x].hidden"
+                                    *ngSwitchCase="'textarea'">
                         <mat-label [innerHTML]="records[x].title"></mat-label>
-                        <textarea matInput matTextareaAutosize [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}"></textarea>
+                        <textarea matInput matTextareaAutosize [formControlName]="records[x].name"
+                                  [required]="records[x].required_boolean"
+                                  placeholder="{{records[x].title}}"></textarea>
                         <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                         <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                     </mat-form-field>
 
                     <mat-form-field [hidden]="records[x].hidden" *ngSwitchCase="'password'">
                         <mat-label [innerHTML]="records[x].title"></mat-label>
-                        <input matInput type="password" [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
+                        <input matInput type="password" [formControlName]="records[x].name"
+                               [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
                         <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                         <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                     </mat-form-field>
@@ -478,9 +516,11 @@
 
 
 
-                    <mat-form-field [appearance]="get_appearance()" [matTooltip]="records[x].title"  [hidden]="records[x].hidden" *ngSwitchDefault>
+                    <mat-form-field [appearance]="get_appearance()" [matTooltip]="records[x].title"
+                                    [hidden]="records[x].hidden" *ngSwitchDefault>
                         <mat-label [innerHTML]="records[x].title"></mat-label>
-                        <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean" placeholder="{{records[x].title}}">
+                        <input matInput [formControlName]="records[x].name" [required]="records[x].required_boolean"
+                               placeholder="{{records[x].title}}">
                         <mat-error>{{records[x].title}} обязательное поле!</mat-error>
                         <mat-hint align="end" *ngIf="records[x].hint" [innerHTML]="records[x].hint"></mat-hint>
                     </mat-form-field>

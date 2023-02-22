@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Entity} from "../models/entity.model";
 import {Subject, takeUntil} from "rxjs";
 import {EntityService} from "../services/entity/entity.service";
-import {InitFormService} from './init-service/init-form.service';
 import {FormResponseModel} from "../models/responses/form-response.model";
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {RowItem} from "../models/responses/grid-response.model";
@@ -80,7 +79,6 @@ export class FormComponent implements OnInit {
 
     constructor(
         private entityService: EntityService,
-        private initFormService: InitFormService,
         protected _formBuilder: FormBuilder,
     ) {
         this._unsubscribeAll = new Subject();
@@ -100,6 +98,7 @@ export class FormComponent implements OnInit {
             .subscribe((result: FormResponseModel) => {
                 this.records = result.item;
                 // console.log('FORM RES', result);
+                // console.log("KEYS", Object.keys(this.records));
 
                 for (const [key_obj, value_obj] of Object.entries(result.item)) {
                     try {
@@ -117,8 +116,8 @@ export class FormComponent implements OnInit {
                 this.rows = Object.keys(result.item);
 
                 // console.log('REC', this.records);
-                this.initFormService.initForm(this);
-                // this.init_form()
+                // this.initFormService.initForm(this);
+                this.init_form()
 /*
                         this._data.model = this.records;
                         // console.log(this.records);
@@ -126,6 +125,152 @@ export class FormComponent implements OnInit {
                         this.rows = Object.keys(result.data);
 */
             });
+    }
+
+    init_form() {
+        // Сначала нужно получить значение topic_id
+        // В цикле, есть есть совпадения с active_in_topic, тогда применяем правила ОБЯЗАТЕЛЬНОСТИ
+        // При смене типа в форме, надо перезапускать процесс показа/валидации элементов
+        let data = this.entity;
+
+        // console.log('START-REC', this.records);
+        // console.log('START-FORM', this.form);
+
+        for (let i = 0; i < this.rows.length; i++) {
+            // console.log(this.records[this.rows[i]].type);
+            const form_control_item = new FormControl(this.records[this.rows[i]].value);
+            form_control_item.clearValidators();
+            this.records[this.rows[i]].required_boolean = false;
+            if (data.get_hidden_column_edit(this.rows[i])) {
+                this.records[this.rows[i]].hidden = true;
+            } else {
+                this.records[this.rows[i]].hidden = false;
+            }
+            if (this.records[this.rows[i]].active_in_topic != '0' && this.records[this.rows[i]].active_in_topic != null) {
+                this.records[this.rows[i]].active_in_topic_array = this.records[this.rows[i]].active_in_topic.split(',');
+            } else {
+                this.records[this.rows[i]].active_in_topic_array = null;
+            }
+
+            if (this.records[this.rows[i]].required == 'on') {
+                if (!this.records[this.rows[i]].hidden) {
+                    form_control_item.setValidators(forbiddenNullValue());
+                    this.records[this.rows[i]].required_boolean = true;
+                }
+            }
+            if (this.records[this.rows[i]].name == 'email') {
+                form_control_item.setValidators(Validators.email);
+            }
+            /*
+                        console.log(this.rows[i]);
+                        console.log(form_control_item);
+                        console.log(i);
+            */
+            this.form.addControl(this.rows[i], form_control_item);
+
+            if (this.is_date_type(this.records[this.rows[i]].type) && this.records[this.rows[i]].value == 'now') {
+                this.form.controls[this.rows[i]].patchValue(moment());
+            }
+
+            if (this.records[this.rows[i]].type == 'textarea_editor') {
+                this.text_area_editor_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
+            }
+
+            if (this.records[this.rows[i]].type == 'parameter') {
+                this.parameters_storage[this.records[this.rows[i]].name] = this.records[this.rows[i]].value;
+            }
+
+            if (
+                this.records[this.rows[i]].type == 'select_by_query' ||
+                this.records[this.rows[i]].type == 'select_by_query_multiple' ||
+                this.records[this.rows[i]].type == 'select_by_query_multi'
+            ) {
+                this.init_select_by_query_options(this.records[this.rows[i]].name, i);
+                if (this.records[this.rows[i]].value == 0) {
+                    this.form.controls[this.rows[i]].patchValue(null);
+                }
+            }
+            if (
+                this.records[this.rows[i]].type == 'select_box_structure' ||
+                this.records[this.rows[i]].type == 'select_box_structure_simple_multiple' ||
+                this.records[this.rows[i]].type == 'select_box_structure_multiple_checkbox'
+            ) {
+                this.init_select_by_query_options(this.records[this.rows[i]].name, i);
+                if (this.records[this.rows[i]].value == 0) {
+                    this.form.controls[this.rows[i]].patchValue(null);
+                }
+            }
+
+            if (this.records[this.rows[i]].type == 'date') {
+                // this.form.controls[this.rows[i]].patchValue();
+                // console.log(this.records[this.rows[i]]);
+                if (this.records[this.rows[i]].value_string != '' && this.records[this.rows[i]].value_string != null) {
+                    this.form.controls[this.rows[i]].patchValue(moment(this.records[this.rows[i]].value_string, 'DD.MM.YYYY'));
+                } else {
+                    this.form.controls[this.rows[i]].patchValue(null);
+                }
+            }
+
+            if (this.records[this.rows[i]].type == 'dttime') {
+                this.form.controls[this.rows[i]].patchValue(this.records[this.rows[i]].value.slice(10, 16));
+            }
+
+            if (this.records[this.rows[i]].type == 'select_box') {
+                this.init_select_box_options(this.records[this.rows[i]].name);
+                if (this.records[this.rows[i]].value_string == '' && this.records[this.rows[i]].value == '') {
+                    this.form.controls[this.rows[i]].patchValue(null);
+                }
+            }
+
+            if (this.records[this.rows[i]].type == 'checkbox') {
+                if (this.records[this.rows[i]].value != 1) {
+                    this.form.controls[this.rows[i]].patchValue(false);
+                }
+            }
+
+            if (this.records[this.rows[i]].type == 'geodata') {
+                this.init_geodata(this.records[this.rows[i]].name);
+            }
+
+            if (this.records[this.rows[i]].type == 'photo') {
+                this.init_photo_image(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
+            }
+
+
+            if (this.records[this.rows[i]].type == 'uploads') {
+                this.init_gallery_images(this.records[this.rows[i]].name, this.records[this.rows[i]].value);
+            }
+
+            if (this.records[this.rows[i]].parameters != null) {
+                if (this.records[this.rows[i]].parameters.dadata == 1) {
+                    this.hide_dadata(this.rows[i]);
+                }
+
+            }
+            if (data.is_hidden(this.rows[i])) {
+                this.hide_row(this.rows[i]);
+            }
+            if (data.get_default_value(this.rows[i])) {
+                this.records[this.rows[i]].value = data.get_default_value(this.rows[i]);
+                this.form.controls[this.rows[i]].patchValue(this.records[this.rows[i]].value);
+            }
+        }
+        /*
+                console.log('records', this.records);
+                console.log('controls', this.form.controls);
+                console.log(this.tabs);
+                console.log(this.tabs_keys);
+                console.log('lets go');
+        */
+
+        // console.log('END-REC', this.records);
+        // console.log('END-FORM', this.form);
+        this.form_inited = true;
+        this.count_visible_items();
+        /*
+        this.apply_topic_activity();
+        this.after_form_inited();
+         */
     }
 
     hide_dadata(row: string) {
