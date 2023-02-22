@@ -326,7 +326,7 @@ export const POST_INIT_RECORDS = {
         "title": "Дата поступления заявки",
         "title_default": null,
         "type": "hidden",
-        "type_native": "date",
+        "type_native": "hidden",
         "multiple": false,
         "unique": null,
         "value_default": null,
