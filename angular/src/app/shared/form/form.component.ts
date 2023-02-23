@@ -134,7 +134,12 @@ export class FormComponent implements OnInit {
         let data = this.entity;
 
         // console.log('START-REC', this.records);
-        // console.log('START-FORM', this.form);
+        const controlValues = [];
+        for (const [key_obj, value_obj] of Object.entries(this.form.controls)) {
+            const value = value_obj.value;
+            controlValues.push(value);
+        }
+        console.log('START-FORM', controlValues);
 
         for (let i = 0; i < this.rows.length; i++) {
             // console.log(this.records[this.rows[i]].type);
@@ -264,7 +269,13 @@ export class FormComponent implements OnInit {
         */
 
         // console.log('END-REC', this.records);
-        // console.log('END-FORM', this.form);
+        const controlValuesEnd = [];
+        for (const [key_obj, value_obj] of Object.entries(this.form.controls)) {
+            const value = value_obj.value;
+            controlValuesEnd.push(value);
+        }
+        console.log('END-FORM', controlValuesEnd);
+
         this.form_inited = true;
         this.count_visible_items();
         /*

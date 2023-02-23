@@ -20,7 +20,8 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {Entity} from '../models/entity.model';
 import {PRE_INIT_RECORDS} from "../../mocks/pre-int-records";
 import {POST_INIT_RECORDS} from "../../mocks/post-int-records";
-import {RowItem} from "../models/responses/grid-response.model";
+import {POST_INIT_CONTROLS} from "../../mocks/post-int-controls";
+import * as moment from "moment/moment";
 
 describe('FormComponent', () => {
     let component: FormComponent;
@@ -33,6 +34,7 @@ describe('FormComponent', () => {
     let mockRowItem: any;
     let preInitRecords: any;
     let postInitRecords: any;
+    let postInitControls: any;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -59,14 +61,12 @@ describe('FormComponent', () => {
         entity = new Entity();
         component.entity = entity;
         preInitRecords = PRE_INIT_RECORDS;
-        postInitRecords = POST_INIT_RECORDS as unknown as RowItem;
+        postInitRecords = POST_INIT_RECORDS;
+        postInitControls = POST_INIT_CONTROLS;
         for (const [key_obj, value_obj] of Object.entries(postInitRecords)) {
             postInitRecords[key_obj] = new EntityItem(value_obj);
         }
-        postInitRecords['order_text'].active_in_topic_array = ['test', 'done'];
-        postInitRecords['src_page'].required_boolean = true;
-        postInitRecords['test-record-6'].hidden = true;
-        entityItem = new EntityItem(mockRowItem);
+
         spyOn(entityService, 'fetch_one').and.returnValue(of({
             item: preInitRecords, success: true, tabs: {
                 основное:
@@ -108,10 +108,27 @@ describe('FormComponent', () => {
     });
 
     it('should recors to equal postInitRecors', () => {
+        postInitRecords['order_text'].active_in_topic_array = ['test', 'done'];
+        postInitRecords['src_page'].required_boolean = true;
+        postInitRecords['test-record-6'].hidden = true;
+        entityItem = new EntityItem(mockRowItem);
+        component.entity.hide_column_edit('test-record-7');
+        postInitRecords['test-record-7'].hidden = true;
+        component.entity.set_hidden('test-record-8');
+        postInitRecords['test-record-8'].hidden = true;
+        component.entity.set_default_value('test-record-3', 'test-value');
+        postInitRecords['test-record-3'].value = 'test-value';
         component.init_form();
-        // console.log(component.records['order_text'].active_in_topic_array);
-        // console.log('POST', postInitRecords['order_text'].active_in_topic_array);
+        const controlsValuesEnd = [];
+        for (const [key_obj, value_obj] of Object.entries(component.form.controls)) {
+            const value = value_obj.value;
+            controlsValuesEnd.push(value);
+        }
+        controlsValuesEnd[1] = null;
+        console.log('REAL', controlsValuesEnd);
+        console.log('STANDARD', postInitControls);
         expect(component.records).toEqual(postInitRecords);
+        expect(controlsValuesEnd).toEqual(postInitControls);
     });
 
 
