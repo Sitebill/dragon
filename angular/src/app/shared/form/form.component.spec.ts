@@ -111,7 +111,6 @@ describe('FormComponent', () => {
         postInitRecords['order_text'].active_in_topic_array = ['test', 'done'];
         postInitRecords['src_page'].required_boolean = true;
         postInitRecords['test-record-6'].hidden = true;
-        entityItem = new EntityItem(mockRowItem);
         component.entity.hide_column_edit('test-record-7');
         postInitRecords['test-record-7'].hidden = true;
         component.entity.set_hidden('test-record-8');
@@ -131,5 +130,79 @@ describe('FormComponent', () => {
         expect(controlsValuesEnd).toEqual(postInitControls);
     });
 
+    it('should onCommentToggle change comment_open to false', () => {
+        component.onCommentToggle(false);
+        const commentOpen = component.getCommentOpen();
+        const commentHeightFix = component.getCommentHeightFix();
+        expect(commentOpen).toBe(false);
+        expect(commentHeightFix).toBe('comment-off-height-fix');
+    });
+
+    it('should onCommentToggle change comment_open to true', () => {
+        component.onCommentToggle(true);
+        const commentOpen = component.getCommentOpen();
+        const commentHeightFix = component.getCommentHeightFix();
+        expect(commentOpen).toBe(true);
+        expect(commentHeightFix).toBe('comment-on-height-fix');
+    });
+
+    it('should get_flex_padding return p-12', () => {
+        entityItem = new EntityItem(mockRowItem);
+        entityItem.type = '';
+        entityItem.hidden = false;
+        const flexPadding = component.get_flex_padding('', '', entityItem);
+        expect(flexPadding).toBe('p-12');
+    });
+
+    it('should get_flex_padding return ""', () => {
+        entityItem = new EntityItem(mockRowItem);
+        entityItem.type = 'hidden';
+        entityItem.hidden = true;
+        const flexPadding = component.get_flex_padding('', '', entityItem);
+        expect(flexPadding).toBe('');
+    });
+
+    it('should get_flex_padding return p-12 border-top-1px', () => {
+        entityItem = new EntityItem(mockRowItem);
+        entityItem.fxFlex = 1;
+        const flexPadding = component.get_flex_padding('', '', entityItem);
+        expect(flexPadding).toBe('p-12 border-top-1px');
+    });
+
+    it('should get_flex_width return auto', () => {
+        entityItem = new EntityItem(mockRowItem);
+        const flexWidth = component.get_flex_width('', '', entityItem);
+        expect(flexWidth).toBe('auto');
+    });
+
+    it('should get_flex_width return 0', () => {
+        entityItem = new EntityItem(mockRowItem);
+        entityItem.type = 'hidden';
+        entityItem.hidden = true;
+        const flexWidth = component.get_flex_width('', '', entityItem);
+        expect(flexWidth).toBe(0);
+    });
+
+    it('should get_flex_width return 100', () => {
+        entityItem = new EntityItem(mockRowItem);
+        entityItem.type = 'uploads';
+        let flexWidth = component.get_flex_width('', '', entityItem);
+        expect(flexWidth).toBe(100);
+        entityItem.type = 'textarea';
+        flexWidth = component.get_flex_width('', '', entityItem);
+        expect(flexWidth).toBe(100);
+        entityItem.type = 'textarea_editor';
+        flexWidth = component.get_flex_width('', '', entityItem);
+        expect(flexWidth).toBe(100);
+        entityItem.type = 'injector';
+        flexWidth = component.get_flex_width('', '', entityItem);
+        expect(flexWidth).toBe(100);
+        entityItem.type = 'photo';
+        flexWidth = component.get_flex_width('', '', entityItem);
+        expect(flexWidth).toBe(100);
+        entityItem.type = 'geodata';
+        flexWidth = component.get_flex_width('', '', entityItem);
+        expect(flexWidth).toBe(100);
+    });
 
 });

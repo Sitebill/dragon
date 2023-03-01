@@ -139,7 +139,7 @@ export class FormComponent implements OnInit {
             const value = value_obj.value;
             controlValues.push(value);
         }
-        console.log('START-FORM', controlValues);
+        // console.log('START-FORM', controlValues);
 
         for (let i = 0; i < this.rows.length; i++) {
             // console.log(this.records[this.rows[i]].type);
@@ -274,7 +274,7 @@ export class FormComponent implements OnInit {
             const value = value_obj.value;
             controlValuesEnd.push(value);
         }
-        console.log('END-FORM', controlValuesEnd);
+        // console.log('END-FORM', controlValuesEnd);
 
         this.form_inited = true;
         this.count_visible_items();
@@ -436,6 +436,10 @@ export class FormComponent implements OnInit {
             return 'comment-on-height-fix';
         }
         return 'comment-off-height-fix';
+    }
+
+    getCommentOpen(): boolean {
+        return this.comment_open;
     }
 
     save() {

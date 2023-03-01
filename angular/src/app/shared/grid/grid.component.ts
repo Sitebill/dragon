@@ -72,9 +72,9 @@ export class GridComponent implements OnInit {
         //console.log('COL', columns);
         const columnDefs: Array<ColDef> = [];
         columns.forEach( column => {
-            if (rowItem[column] && rowItem[column].title ) {
-                //console.log('TITLE', rowItem[column].title);
-            }
+            // if (rowItem[column] ) {
+            //     console.log('TITLE', rowItem[column]);
+            // }
             columnDefs.push(
                 {
                     headerName: rowItem[column] && rowItem[column].title ? rowItem[column].title : column,
@@ -96,7 +96,7 @@ export class GridComponent implements OnInit {
 
 
     // Example using Grid's API
-    clearSelection(): void {
+    clearSelection(): void {  // isn`t tested
         this.agGrid.api.deselectAll();
     }
 

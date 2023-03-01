@@ -86,7 +86,7 @@ describe('GridComponent', () => {
 
     it('should composecolumnDefs use title', () => {
         const controlColumnDefs = [{ "headerName": "title", "colId": "item", 'valueGetter': grid.cvg }];
-        mockRowItem = new MockItemModel('title');
+        mockRowItem = new MockItemModel({title: 'title'});
         gridData = [{item: new EntityItem(mockRowItem)}];
         columns = Object.keys(gridData[0]);
         const columnDefs = grid.composecolumnDefs(columns, gridData[0]);
@@ -150,17 +150,6 @@ describe('GridComponent', () => {
         const value = grid.pkvg(valueGetterParams);
         spyOn(grid, 'pkvg');
         expect(value).toBe(null);
-    });
-
-    it('should agGrid.api.deselectAll in clearSelection been called', () => {
-        const controlOfFoo = 'clearSelection() {\n' +
-            '    cov_k0oy9s6by().f[7]++;\n' +
-            '    cov_k0oy9s6by().s[19]++;\n' +
-            '    this.agGrid.api.deselectAll();\n' +
-            '  }'
-        const stringOfFoo =  String(grid.clearSelection);
-        console.log(stringOfFoo);
-        expect(stringOfFoo).toBe(controlOfFoo);
     });
 
 });
