@@ -124,8 +124,8 @@ describe('FormComponent', () => {
             controlsValuesEnd.push(value);
         }
         controlsValuesEnd[1] = null;
-        console.log('REAL', controlsValuesEnd);
-        console.log('STANDARD', postInitControls);
+        // console.log('REAL', controlsValuesEnd);
+        // console.log('STANDARD', postInitControls);
         expect(component.records).toEqual(postInitRecords);
         expect(controlsValuesEnd).toEqual(postInitControls);
     });
