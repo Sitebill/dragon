@@ -22,6 +22,7 @@ import {PRE_INIT_RECORDS} from "../../mocks/pre-int-records";
 import {POST_INIT_RECORDS} from "../../mocks/post-int-records";
 import {POST_INIT_CONTROLS} from "../../mocks/post-int-controls";
 import * as moment from "moment/moment";
+import {FormType} from "../models/api.model";
 
 describe('FormComponent', () => {
     let component: FormComponent;
@@ -58,6 +59,7 @@ describe('FormComponent', () => {
         formBuilder = TestBed.inject(FormBuilder);
         forbiddenNullValueFunction = TestBed.inject(forbiddenNullValue);
         mockRowItem = new MockItemModel();
+        entityItem = new EntityItem(mockRowItem);
         entity = new Entity();
         component.entity = entity;
         preInitRecords = PRE_INIT_RECORDS;
@@ -147,7 +149,6 @@ describe('FormComponent', () => {
     });
 
     it('should get_flex_padding return p-12', () => {
-        entityItem = new EntityItem(mockRowItem);
         entityItem.type = '';
         entityItem.hidden = false;
         const flexPadding = component.get_flex_padding('', '', entityItem);
@@ -155,7 +156,6 @@ describe('FormComponent', () => {
     });
 
     it('should get_flex_padding return ""', () => {
-        entityItem = new EntityItem(mockRowItem);
         entityItem.type = 'hidden';
         entityItem.hidden = true;
         const flexPadding = component.get_flex_padding('', '', entityItem);
@@ -163,28 +163,24 @@ describe('FormComponent', () => {
     });
 
     it('should get_flex_padding return p-12 border-top-1px', () => {
-        entityItem = new EntityItem(mockRowItem);
         entityItem.fxFlex = 1;
         const flexPadding = component.get_flex_padding('', '', entityItem);
         expect(flexPadding).toBe('p-12 border-top-1px');
     });
 
     it('should get_flex_width return auto', () => {
-        entityItem = new EntityItem(mockRowItem);
         const flexWidth = component.get_flex_width('', '', entityItem);
         expect(flexWidth).toBe('auto');
     });
 
     it('should get_flex_width return 0', () => {
-        entityItem = new EntityItem(mockRowItem);
         entityItem.type = 'hidden';
         entityItem.hidden = true;
         const flexWidth = component.get_flex_width('', '', entityItem);
         expect(flexWidth).toBe(0);
     });
 
-    it('should get_flex_width return 100', () => {
-        entityItem = new EntityItem(mockRowItem);
+    it('should get_flex_width return 100 for types...', () => {
         entityItem.type = 'uploads';
         let flexWidth = component.get_flex_width('', '', entityItem);
         expect(flexWidth).toBe(100);
@@ -203,6 +199,55 @@ describe('FormComponent', () => {
         entityItem.type = 'geodata';
         flexWidth = component.get_flex_width('', '', entityItem);
         expect(flexWidth).toBe(100);
+    });
+
+    it('should get_flex_width return parameter', () => {
+        entityItem.parameters['fxFlex'] = 'test';
+        const flexWidth = component.get_flex_width('', '', entityItem);
+        expect(flexWidth).toBe('test');
+    });
+
+    it('should get_flex_width return fxFlex', () => {
+        entityItem.fxFlex = 1;
+        const flexWidth = component.get_flex_width('', '', entityItem);
+        expect(flexWidth).toBe(1);
+    });
+
+    it('should get_flex_width return column_mode', () => {
+        component.column_mode = 1;
+        const flexWidth = component.get_flex_width('', '', entityItem);
+        expect(flexWidth).toBe(1);
+    });
+
+    it('should get_flex_width return auto for visible_items_counter', () => {
+        component.rows = ['client_id'];
+        // console.log(224, component.rows);
+        component.count_visible_items();
+        const flexWidth = component.get_flex_width('', '', entityItem);
+        expect(component.get_visible_items_counter() === 1).toBe(true);
+        expect(flexWidth).toBe('auto');
+    });
+
+    it('should get_flex_width return 100 for FormType.inline', () => {
+       // console.log(232, component.)
+        const flexWidth = component.get_flex_width('', FormType.inline, entityItem);
+        expect(flexWidth).toBe(100);
+    });
+
+    it('should get_flex_width return value for size', () => {
+        let flexWidth = component.get_flex_width('lg', '', entityItem);
+        expect(flexWidth).toBe(33);
+        flexWidth = component.get_flex_width('xl', '', entityItem);
+        expect(flexWidth).toBe(20);
+        flexWidth = component.get_flex_width('md', '', entityItem);
+        expect(flexWidth).toBe(50);
+        flexWidth = component.get_flex_width('xs', '', entityItem);
+        expect(flexWidth).toBe(100);
+    });
+
+    it('should get_appearance return appearance.outline', () => {
+        const appearance = component.get_appearance();
+        expect(appearance).toBe(component.appearance.outline);
     });
 
 });

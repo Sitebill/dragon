@@ -509,9 +509,9 @@ export class FormComponent implements OnInit {
         if (form_type == FormType.inline) {
             return 100;
         }
-        if (this.numberOfColumns === 1) {
+        if (this.numberOfColumns === 1) { // should be tested when setNumberOfColumns will be realised
             return 100;
-        } else if (this.numberOfColumns === 2) {
+        } else if (this.numberOfColumns === 2) { // should be tested when setNumberOfColumns will be realised
             if (size == 'xs') {
                 return 100;
             } else {
