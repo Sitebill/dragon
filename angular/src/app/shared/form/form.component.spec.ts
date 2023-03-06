@@ -111,7 +111,10 @@ describe('FormComponent', () => {
 
     it('should recors to equal postInitRecors', () => {
         postInitRecords['order_text'].active_in_topic_array = ['test', 'done'];
+        postInitRecords['test-record'].active_in_topic_array = [ '1','2' ];
         postInitRecords['src_page'].required_boolean = true;
+        postInitRecords['test-record'].required_boolean = true;
+        postInitRecords['test-record-2'].required_boolean = true;
         postInitRecords['test-record-6'].hidden = true;
         component.entity.hide_column_edit('test-record-7');
         postInitRecords['test-record-7'].hidden = true;
@@ -250,4 +253,20 @@ describe('FormComponent', () => {
         expect(appearance).toBe(component.appearance.outline);
     });
 
+    it('should apply_topic_activity do sth', () => {
+        component.form.controls['topic_id'].patchValue(1);
+        component.records['test-record'].required_boolean = false;
+        component.records['test-record-3'].type = 'compose';
+        component.apply_topic_activity();
+        expect(component.form.controls['topic_id'].value).toBe(1);
+        expect(component.records['order_text'].hidden).toBe(true);
+        expect(component.records['test-record'].required_boolean).toBe(true);
+        expect(component.records['test-record-3'].hidden).toBe(true);
+        expect(component.records['test-record-3'].type).toBe('hidden');
+        component.records['test-record-3'].type = 'select_box';
+    });
+
+    // it('should fetchMore been called', () => {
+    //     component.onScrollToEnd('test-record');
+    // });
 });

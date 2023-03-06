@@ -269,11 +269,11 @@ export class FormComponent implements OnInit {
         */
 
         // console.log('END-REC', this.records);
-        const controlValuesEnd = [];
-        for (const [key_obj, value_obj] of Object.entries(this.form.controls)) {
-            const value = value_obj.value;
-            controlValuesEnd.push(value);
-        }
+        // const controlValuesEnd = [];
+        // for (const [key_obj, value_obj] of Object.entries(this.form.controls)) {
+        //     const value = value_obj.value;
+        //     controlValuesEnd.push(value);
+        // }
         // console.log('END-FORM', controlValuesEnd);
 
         this.form_inited = true;
@@ -577,7 +577,6 @@ export class FormComponent implements OnInit {
                     this.records[this.rows[i]].active_in_topic != null
                 ) {
                     let item = this.form.get(this.rows[i]);
-
                     if (
                         Array.isArray(this.records[this.rows[i]].active_in_topic_array) &&
                         this.records[this.rows[i]].active_in_topic_array.indexOf(current_topic_id.toString()) == -1
@@ -610,6 +609,13 @@ export class FormComponent implements OnInit {
 
             }
         }
+        const controlArray = [];
+        for (const [key_obj, value_obj] of Object.entries(this.records)) {
+            const value = value_obj.type;
+            const value2 = value_obj.parameters;
+            controlArray.push([key_obj, value, value2]);
+        }
+        console.log(617, controlArray);
     }
 
     onScrollToEnd(columnName: string) {
