@@ -1,5 +1,6 @@
 <!-- Button to clear selection -->
 <button (click)="clearSelection()">Clear Selection</button>
+<button (click)="onRemoveSelected()">Remove Selected</button>
 <!-- AG Grid Angular Component -->
 <ag-grid-angular
     style="width: 100%; height: 100%"
@@ -9,6 +10,7 @@
     [rowData]="gridData"
     [rowSelection]="'multiple'"
     [animateRows]="true"
+    [rowDragManaged]="true"
     (gridReady)="onGridReady($event)"
     (cellClicked)="onCellClicked($event)"
 ></ag-grid-angular>

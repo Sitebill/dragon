@@ -83,7 +83,8 @@ export class GridComponent implements OnInit {
                 }
             );
         });
-        //console.log('COLDEF', columnDefs);
+        columnDefs[0].rowDrag = true;
+        // console.log('COLDEF', columnDefs);
         return columnDefs;
     }
 
@@ -91,6 +92,13 @@ export class GridComponent implements OnInit {
     // Example of consuming Grid Event
     onCellClicked( e: CellClickedEvent): void {
         console.log('cellClicked', e);
+    }
+
+    onRemoveSelected() {
+        const sure = confirm("Are you sure you want to delete the selected data?");
+        if (!sure) return;
+        const selectedData = this.agGrid.api.getSelectedRows();
+        this.agGrid.api.applyTransaction({ remove: selectedData })!;
     }
 
 
