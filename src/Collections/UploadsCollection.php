@@ -4,6 +4,9 @@ namespace Sitebill\Dragon\Collections;
 
 use Illuminate\Support\Collection;
 
+/**
+ * Коллекция объектов типа Uploads
+ */
 class UploadsCollection
 {
     private Collection $collection;
