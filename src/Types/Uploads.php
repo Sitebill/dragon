@@ -10,6 +10,23 @@ class Uploads
     public $size;
     public $duration;
     public $remote;
+    public $vk_video_id;
+
+    /**
+     * @return mixed
+     */
+    public function getVkVideoId()
+    {
+        return $this->vk_video_id;
+    }
+
+    /**
+     * @param mixed $vk_video_id
+     */
+    public function setVkVideoId($vk_video_id): void
+    {
+        $this->vk_video_id = $vk_video_id;
+    }
 
     public function __construct($srcArray)
     {
@@ -137,6 +154,7 @@ class Uploads
             throw new \Exception('Undefined normal value in array');
         }
         $this->setNormal($srcArray['normal']);
+        $this->setVkVideoId($srcArray['vk_video_id'] ?? null);
 
     }
 }
