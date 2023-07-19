@@ -11,6 +11,40 @@ class Uploads
     public $duration;
     public $remote;
     public $vk_video_id;
+    public $vk_owner_id;
+    public $vk_player;
+
+    /**
+     * @return mixed
+     */
+    public function getVkOwnerId()
+    {
+        return $this->vk_owner_id;
+    }
+
+    /**
+     * @param mixed $vk_owner_id
+     */
+    public function setVkOwnerId($vk_owner_id): void
+    {
+        $this->vk_owner_id = $vk_owner_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVkPlayer()
+    {
+        return $this->vk_player;
+    }
+
+    /**
+     * @param mixed $vk_player
+     */
+    public function setVkPlayer($vk_player): void
+    {
+        $this->vk_player = $vk_player;
+    }
 
     /**
      * @return mixed
@@ -155,6 +189,8 @@ class Uploads
         }
         $this->setNormal($srcArray['normal']);
         $this->setVkVideoId($srcArray['vk_video_id'] ?? null);
+        $this->setVkOwnerId($srcArray['vk_owner_id'] ?? null);
+        $this->setVkPlayer($srcArray['vk_player'] ?? null);
 
     }
 }
